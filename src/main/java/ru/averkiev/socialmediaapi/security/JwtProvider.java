@@ -102,52 +102,31 @@ public class JwtProvider {
     }
 
     /**
-     * Проверяет и возвращает результат проверки токена.
-     * @param token переданный токен, который необходимо проверить.
+     * Парсит токен.
+     * @param token переданный токен.
      * @param secret секретный ключ для разбора токена и проверки его целостности.
-     * @return возвращает результат проверки токена.
-     * @exception ExpiredJwtException выбрасывается если токен недействителен.
-     * @exception UnsupportedJwtException выбрасывается если токен не поддерживается.
-     * @exception MalformedJwtException выбрасывается если токен некорректен.
-     * @exception SignatureException выбрасывается если секретный ключ недействителен.
      */
-    public boolean validateToken(@NotNull String token, @NotNull Key secret) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(secret)
-                    .build()
-                    .parseClaimsJws(token);
-            return true;
-        } catch (ExpiredJwtException expEx) {
-            log.error("Истек срок действия токена", expEx);
-        } catch (UnsupportedJwtException unsEx) {
-            log.error("Неподдерживаемый JWT", unsEx);
-        } catch (MalformedJwtException malEx) {
-            log.error("Некорректный JWT", malEx);
-        } catch (SignatureException sEx) {
-            log.error("Недействительная подпись", sEx);
-        } catch (Exception ex) {
-            log.error("Неправильный токен", ex);
-        }
-        return false;
+    public void parseToken(@NotNull String token, @NotNull Key secret) throws Exception {
+        Jwts.parserBuilder()
+                .setSigningKey(secret)
+                .build()
+                .parseClaimsJws(token);
     }
 
     /**
-     * Проверяет и возвращает результат проверки токена доступа.
-     * @param accessToken передаваемый токен доступа, который необходимо проверить.
-     * @return возвращает результат проверки токена доступа.
+     * Парсит токен доступа.
+     * @param accessToken передаваемый токен доступа.
      */
-    public boolean validateAccessToken(@NotNull String accessToken) {
-        return validateToken(accessToken, jwtAccessSecret);
+    public void parseAccessToken(@NotNull String accessToken) throws Exception {
+        parseToken(accessToken, jwtAccessSecret);
     }
 
     /**
-     * Проверяет и возвращает результат проверки токена обновления.
+     * Парсит токен обновления.
      * @param refreshToken передаваемый токен доступа, который необходимо проверить.
-     * @return возвращает результат проверки токена обновления.
      */
-    public boolean validateRefreshToken(@NotNull String refreshToken) {
-        return validateToken(refreshToken, jwtRefreshSecret);
+    public void parseRefreshToken(@NotNull String refreshToken) throws Exception {
+        parseToken(refreshToken, jwtRefreshSecret);
     }
 
     /**
