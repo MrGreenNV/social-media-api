@@ -25,11 +25,6 @@ public class UserCreateDTO {
     private String password;
 
     /**
-     * Хэшированное подтверждение пароля пользователя.
-     */
-    private String confirmPassword;
-
-    /**
      * Электронная почта пользователя.
      */
     @CustomEmail
