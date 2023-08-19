@@ -2,7 +2,6 @@ package ru.averkiev.socialmediaapi.validations;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-
 import java.lang.annotation.*;
 
 /**
