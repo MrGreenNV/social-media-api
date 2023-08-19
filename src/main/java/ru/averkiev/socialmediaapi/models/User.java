@@ -1,48 +1,73 @@
 package ru.averkiev.socialmediaapi.models;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 import ru.averkiev.socialmediaapi.validations.CustomEmail;
 import ru.averkiev.socialmediaapi.validations.CustomUsername;
 
+import java.util.List;
+
+/**
+ * Описание пользователя системы.
+ * @author mrGreenNV
+ */
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
-@ApiModel(description = "Сведения о пользователе")
+public class User extends BaseEntity {
 
-public class User {
-
-    @Id
-    @Column(name = "id")
-    @ApiModelProperty(notes = "Идентификатор пользователя")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    /**
+     * Имя пользователя в системе.
+     */
     @CustomUsername
     @Column(name = "username")
-    @ApiModelProperty(notes = "Имя пользователя в системе")
     private String username;
 
-
+    /**
+     * Хэшированный пароль пользователя.
+     */
     @Column(name = "password")
-    @ApiModelProperty(notes = "Хэшированный пароль пользователя")
     private String password;
 
+    /**
+     * Электронная почта пользователя.
+     */
     @CustomEmail
     @Column(name = "email")
-    @ApiModelProperty(notes = "Электронная почта пользователя")
     private String email;
 
+    /**
+     * Список друзей пользователя.
+     */
+    @Transient
+    private List<User> friends;
+
+    /**
+     * Список подписчиков пользователя.
+     */
+    @Transient
+    private List<User> subscribers;
+
+    /**
+     * Позволяет создать объект пользователя с заданными параметрами.
+     * @param username имя пользователя.
+     * @param password хэшированный пароль.
+     * @param email электронная почта.
+     */
     public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
     }
 
+    /**
+     * Позволяет создать пустой объект пользователя.
+     */
     public User() {
     }
 }
