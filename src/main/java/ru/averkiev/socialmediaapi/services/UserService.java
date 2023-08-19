@@ -42,7 +42,7 @@ public interface UserService {
      * @return Optional, содержащий найденного пользователя, или пустой Optional, если пользователь не найден.
      * @throws UserNotFoundException выбрасывает, если пользователь с заданным именем не найден.
      */
-    User getUserByLogin(String username) throws UserNotFoundException;
+    User getUserByUsername(String username) throws UserNotFoundException;
 
     /**
      * Возвращает список всех пользователей.

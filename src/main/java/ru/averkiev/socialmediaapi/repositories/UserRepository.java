@@ -4,10 +4,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.averkiev.socialmediaapi.models.User;
 
+import java.util.Optional;
+
 /**
  * Интерфейс представляет собой функциональность взаимодействия объекта User с базой данных.
  * @author mrGreenNV
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+    boolean existUserByUsername(String username);
+
+    boolean existsUserByEmail(String email);
+
+    Optional<User> findUserByUsername(String username);
 }
