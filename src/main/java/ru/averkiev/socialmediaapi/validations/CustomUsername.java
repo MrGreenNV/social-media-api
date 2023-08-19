@@ -1,28 +1,36 @@
 package ru.averkiev.socialmediaapi.validations;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 import java.lang.annotation.*;
 
 /**
+ * Аннотация для валидации имени пользователя в системе.
  * @author mrGreenNV
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Constraint(validatedBy = CustomUsernameValidation.class)
-@ApiModel(description = "Аннотация для валидации имени пользователя в системе")
 public @interface CustomUsername {
 
-    @ApiModelProperty(notes = "Определяет сообщение, которое будет отображаться при нарушении валидации")
+    /**
+     * Определяет сообщение, которое будет отображаться при нарушении валидации.
+     * @return сообщение.
+     */
     String message() default "Имя пользователя должно быть от 5 до 255 символов. Допускается использовать латинские буквы цифры и один символ '_'";
 
-    @ApiModelProperty(notes = "Определяет группы ограничений, которым будет принадлежать аннотация")
+    /**
+     * Определяет группы ограничений, которым будет принадлежать аннотация.
+     * @return группы ограничений.
+     */
     Class<?>[] groups() default {};
 
-    @ApiModelProperty(notes = "Определяет нагрузку (payload) для аннотации, которая может быть использована для передачи дополнительной информации в процессе валидации")
+    /**
+     * Определяет нагрузку (payload) для аннотации, которая может быть использована для передачи дополнительной
+     * информации в процессе валидации.
+     * @return нагрузка для аннотации.
+     */
     Class<? extends Payload>[] payload() default {};
 }

@@ -1,37 +1,49 @@
 package ru.averkiev.socialmediaapi.validations;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 import java.util.regex.Pattern;
 
 /**
+ * Класс представляет собой валидатор для проверки имени пользователя в системе.
  * @author mrGreenNV
  */
-@ApiModel(description = "Валидация имени пользователя")
 public class CustomUsernameValidation implements ConstraintValidator<CustomUsername, String> {
 
-    @ApiModelProperty(notes = "Регулярное выражение для валидации имени пользователя", value = "User_537")
+    /**
+     * Регулярное выражение для валидного имени пользователя в системе.
+     */
     private final static Pattern LOGIN_PATTERN = Pattern.compile("^[a-zA-Z0-9]*_?[a-zA-Z0-9]*$");
 
-    @ApiModelProperty(notes = "Минимальное количество символов в имени пользователя")
+    /**
+     * Минимальное количество символов в имени пользователя в системе.
+     */
     private int min;
 
-    @ApiModelProperty(notes = "Максимальное количество символов в имени пользователя")
+    /**
+     * Максимальное количество символов в имени пользователя в системе.
+     */
     private int max;
 
-    @ApiModelProperty(notes = "Инициализирует валидацию с установкой граничных значений")
+    /**
+     * Инициализирует валидацию, устанавливая граничные значения.
+     * @param constraintAnnotation аннотация
+     */
     @Override
     public void initialize(CustomUsername constraintAnnotation) {
         this.min = 6;
         this.max = 254;
     }
 
-    @ApiModelProperty(notes = "Проверяет валидность имени пользователя")
+    /**
+     * Проверяет валидность имени пользователя в системе.
+     * @param value имя пользователя в системе.
+     * @param context контекст.
+     * @return true если имя пользователя в системе валидно, иначе false
+     */
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null) {
             return true;
         }

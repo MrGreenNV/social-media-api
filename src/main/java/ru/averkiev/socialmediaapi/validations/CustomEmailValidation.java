@@ -17,7 +17,7 @@ public class CustomEmailValidation implements ConstraintValidator<CustomEmail, S
     private final static Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+.+.[A-Za-z]{2,4}$");
 
     /**
-     * Инициализирует валидацию, устанавливая граничные значения.
+     * Инициализирует валидацию.
      * @param constraintAnnotation аннотация
      */
     @Override
