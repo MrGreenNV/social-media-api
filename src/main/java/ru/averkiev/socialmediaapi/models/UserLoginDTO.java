@@ -2,16 +2,15 @@ package ru.averkiev.socialmediaapi.models;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.averkiev.socialmediaapi.validations.CustomEmail;
 import ru.averkiev.socialmediaapi.validations.CustomUsername;
 
 /**
- * DTO для передачи регистрационных данных пользователя.
+ * Класс для передачи данных о пользователе для входа в систему.
  * @author mrGreenNV
  */
 @Getter
 @Setter
-public class UserCreateDTO {
+public class UserLoginDTO {
 
     /**
      * Имя пользователя в системе.
@@ -29,11 +28,4 @@ public class UserCreateDTO {
      */
     private String confirmPassword;
 
-    /**
-     * Электронная почта пользователя.
-     */
-    @CustomEmail
-    private String email;
-
 }
-
