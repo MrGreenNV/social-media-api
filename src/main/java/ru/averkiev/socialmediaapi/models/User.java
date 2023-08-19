@@ -6,8 +6,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
-import ru.averkiev.socialmediaapi.validations.CustomEmail;
-import ru.averkiev.socialmediaapi.validations.CustomUsername;
 
 import java.util.List;
 
@@ -24,7 +22,6 @@ public class User extends BaseEntity {
     /**
      * Имя пользователя в системе.
      */
-    @CustomUsername
     @Column(name = "username")
     private String username;
 
@@ -37,7 +34,6 @@ public class User extends BaseEntity {
     /**
      * Электронная почта пользователя.
      */
-    @CustomEmail
     @Column(name = "email")
     private String email;
 
