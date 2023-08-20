@@ -8,7 +8,6 @@ public class RegistrationException  extends RuntimeException {
 
     /**
      * Создаёт новый экземпляр исключения с указанным сообщением об ошибке.
-     *
      * @param msg - сообщение об ошибке.
      */
     public RegistrationException(String msg) {
@@ -17,7 +16,6 @@ public class RegistrationException  extends RuntimeException {
 
     /**
      * Создаёт новый экземпляр исключения с указанным сообщением и причиной.
-     *
      * @param msg   - сообщение об ошибке.
      * @param cause - причина исключения.
      */

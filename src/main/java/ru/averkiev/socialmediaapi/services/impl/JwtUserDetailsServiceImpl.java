@@ -20,9 +20,7 @@ import ru.averkiev.socialmediaapi.security.JwtUserFactory;
 @RequiredArgsConstructor
 public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
-    /**
-     * Сервис для взаимодействия с пользователями.
-     */
+    /** Сервис для взаимодействия с пользователями. */
     private final UserServiceImpl userService;
 
     /**

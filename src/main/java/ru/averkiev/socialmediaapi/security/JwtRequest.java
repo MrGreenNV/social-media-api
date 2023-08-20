@@ -15,6 +15,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class JwtRequest {
-    private String login;
+
+    /** Имя пользователя в системе. */
+    private String username;
+
+    /** Хэшированный пароль пользователя. */
     private String password;
 }

@@ -11,19 +11,13 @@ import java.util.regex.Pattern;
  */
 public class CustomUsernameValidation implements ConstraintValidator<CustomUsername, String> {
 
-    /**
-     * Регулярное выражение для валидного имени пользователя в системе.
-     */
+    /** Регулярное выражение для валидного имени пользователя в системе. */
     private final static Pattern LOGIN_PATTERN = Pattern.compile("^[a-zA-Z0-9]*_?[a-zA-Z0-9]*$");
 
-    /**
-     * Минимальное количество символов в имени пользователя в системе.
-     */
+    /** Минимальное количество символов в имени пользователя в системе. */
     private int min;
 
-    /**
-     * Максимальное количество символов в имени пользователя в системе.
-     */
+    /** Максимальное количество символов в имени пользователя в системе. */
     private int max;
 
     /**

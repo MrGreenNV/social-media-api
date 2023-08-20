@@ -19,33 +19,23 @@ import java.util.List;
 @Setter
 public class User extends BaseEntity {
 
-    /**
-     * Имя пользователя в системе.
-     */
+    /** Имя пользователя в системе. */
     @Column(name = "username")
     private String username;
 
-    /**
-     * Хэшированный пароль пользователя.
-     */
+    /** Хэшированный пароль пользователя. */
     @Column(name = "password")
     private String password;
 
-    /**
-     * Электронная почта пользователя.
-     */
+    /** Электронная почта пользователя. */
     @Column(name = "email")
     private String email;
 
-    /**
-     * Список друзей пользователя.
-     */
+    /** Список друзей пользователя. */
     @Transient
     private List<User> friends;
 
-    /**
-     * Список подписчиков пользователя.
-     */
+    /** Список подписчиков пользователя. */
     @Transient
     private List<User> subscribers;
 

@@ -13,7 +13,13 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class JwtResponse {
+
+    /** Начало заголовка содержащим токен. */
     private final String type = "Bearer";
+
+    /** Access токен в строковом представлении. */
     private String accessToken;
+
+    /** Refresh токен в строковом представлении. */
     private String refreshToken;
 }

@@ -10,5 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class JwtRequestRefresh {
+
+    /** Refresh токен в строковом представлении. */
     private String refreshToken;
 }

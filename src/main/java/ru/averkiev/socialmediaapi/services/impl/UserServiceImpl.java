@@ -22,14 +22,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    /**
-     * ModelMapper для преобразования объектов DTO и объектов модели.
-     */
+    /** ModelMapper для преобразования объектов DTO и объектов модели. */
     private final ModelMapper modelMapper;
 
-    /**
-     * Репозиторий для обращения к базе данных.
-     */
+    /** Репозиторий для обращения к базе данных. */
     private final UserRepository userRepository;
 
     /**

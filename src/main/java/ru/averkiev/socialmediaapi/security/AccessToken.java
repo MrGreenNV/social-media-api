@@ -32,35 +32,25 @@ public class AccessToken {
         this.expiresAt = expiresAt;
     }
 
-    /**
-     * Идентификатор токена.
-     */
+    /** Идентификатор токена. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    /**
-     * Идентификатор пользователя владеющего токеном.
-     */
+    /** Идентификатор пользователя владеющего токеном. */
     @Column(name = "user_id")
     private int userId;
 
-    /**
-     * Строковое представления токена.
-     */
+    /** Строковое представления токена. */
     @Column(name = "token")
     private String accessToken;
 
-    /**
-     * Дата создания токена.
-     */
+    /** Дата создания токена. */
     @Column(name = "created_at")
     private LocalDate createdAt;
 
-    /**
-     * Дата окончания действия токена.
-     */
+    /** Дата окончания действия токена. */
     @Column(name = "expires_at")
     private LocalDate expiresAt;
 }

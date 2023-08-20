@@ -12,20 +12,14 @@ import ru.averkiev.socialmediaapi.validations.CustomUsername;
 @Setter
 public class UserLoginDTO {
 
-    /**
-     * Имя пользователя в системе.
-     */
+    /** Имя пользователя в системе. */
     @CustomUsername
     private String username;
 
-    /**
-     * Хэшированный пароль пользователя.
-     */
+    /** Хэшированный пароль пользователя. */
     private String password;
 
-    /**
-     * Хэшированное подтверждение пароля пользователя.
-     */
+    /** Хэшированное подтверждение пароля пользователя. */
     private String confirmPassword;
 
 }

@@ -15,14 +15,10 @@ import java.util.Collection;
 @Setter
 public class JwtAuthentication implements Authentication {
 
-    /**
-     * Аутентификация в системе.
-     */
+    /** Аутентификация в системе. */
     private boolean authenticated;
 
-    /**
-     * Имя пользователя в системе.
-     */
+    /** Имя пользователя в системе. */
     private String username;
 
     @Override

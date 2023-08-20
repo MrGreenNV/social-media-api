@@ -11,13 +11,9 @@ import lombok.Setter;
 @Setter
 public class UserFriendDTO {
 
-    /**
-     * Имя пользователя в системе.
-     */
+    /** Имя пользователя в системе. */
     private String username;
 
-    /**
-     * Электронная почта пользователя.
-     */
+    /** Электронная почта пользователя. */
     private String email;
 }

@@ -11,8 +11,6 @@ import lombok.Setter;
 @Setter
 public class UserSubscriberDTO {
 
-    /**
-     * Имя пользователя в системе.
-     */
+    /** Имя пользователя в системе. */
     private String username;
 }

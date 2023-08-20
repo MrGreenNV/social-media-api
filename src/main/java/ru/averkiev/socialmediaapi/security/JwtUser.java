@@ -15,29 +15,19 @@ import java.util.Collection;
 @Data
 public class JwtUser implements UserDetails {
 
-    /**
-     * Идентификатор пользователя.
-     */
+    /** Идентификатор пользователя. */
     private final Long id;
 
-    /**
-     * Имя пользователя в системе.
-     */
+    /** Имя пользователя в системе. */
     private final String username;
 
-    /**
-     * Хэшированный пароль.
-     */
+    /** Хэшированный пароль. */
     private final String password;
 
-    /**
-     * Электронная почта пользователя.
-     */
+    /** Электронная почта пользователя. */
     private final String email;
 
-    /**
-     * Доступность пользователя.
-     */
+    /** Доступность пользователя. */
     private final boolean enabled;
 
     @Override

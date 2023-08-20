@@ -10,6 +10,9 @@ import ru.averkiev.socialmediaapi.models.User;
  */
 public class JwtUserFactory {
 
+    /**
+     * Конструктор запрещает создание объекта.
+     */
     private JwtUserFactory() {
 
     }
