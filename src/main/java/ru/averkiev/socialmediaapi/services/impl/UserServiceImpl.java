@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
 
         if (user == null) {
             log.error("IN getUserByUsername - пользователь с именем: {} не найден", username);
-            throw new UserNotFoundException("Пользователь с идентификатором: " + username + " не найден");
+            throw new UserNotFoundException("Пользователь с именем: " + username + " не найден");
         }
 
         log.info("IN getUserByUsername - пользователь с именем: {} успешно найден", username);

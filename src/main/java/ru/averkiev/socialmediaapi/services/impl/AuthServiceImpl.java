@@ -58,8 +58,8 @@ public class AuthServiceImpl implements AuthService {
             final AccessToken accessToken = new AccessToken(
                     jwtUser.getId(),
                     accessTokenStr,
-                    jwtProvider.getAccessClaims(accessTokenStr).getIssuedAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-                    jwtProvider.getAccessClaims(accessTokenStr).getExpiration().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                    jwtProvider.getAccessClaims(accessTokenStr).getIssuedAt(),
+                    jwtProvider.getAccessClaims(accessTokenStr).getExpiration()
             );
 
             // Сохранение access токена в базе данных.
@@ -79,8 +79,8 @@ public class AuthServiceImpl implements AuthService {
             final RefreshToken refreshToken = new RefreshToken(
                     jwtUser.getId(),
                     refreshTokenStr,
-                    jwtProvider.getRefreshClaims(refreshTokenStr).getIssuedAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-                    jwtProvider.getRefreshClaims(refreshTokenStr).getExpiration().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                    jwtProvider.getRefreshClaims(refreshTokenStr).getIssuedAt(),
+                    jwtProvider.getRefreshClaims(refreshTokenStr).getExpiration()
             );
 
             // Сохранение refresh токена в базе данных.
@@ -124,8 +124,8 @@ public class AuthServiceImpl implements AuthService {
                     final AccessToken newAccessToken = new AccessToken(
                             jwtUser.getId(),
                             accessTokenStr,
-                            jwtProvider.getAccessClaims(accessTokenStr).getIssuedAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-                            jwtProvider.getAccessClaims(accessTokenStr).getExpiration().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                            jwtProvider.getAccessClaims(accessTokenStr).getIssuedAt(),
+                            jwtProvider.getAccessClaims(accessTokenStr).getExpiration()
                     );
 
                     // Обновление access токена в базе данных.
@@ -162,8 +162,8 @@ public class AuthServiceImpl implements AuthService {
                     final AccessToken newAccessToken = new AccessToken(
                             jwtUser.getId(),
                             accessTokenStr,
-                            jwtProvider.getAccessClaims(accessTokenStr).getIssuedAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-                            jwtProvider.getAccessClaims(accessTokenStr).getExpiration().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                            jwtProvider.getAccessClaims(accessTokenStr).getIssuedAt(),
+                            jwtProvider.getAccessClaims(accessTokenStr).getExpiration()
                     );
 
                     // Генерация refresh токена.
@@ -173,8 +173,8 @@ public class AuthServiceImpl implements AuthService {
                     final RefreshToken newRefreshToken = new RefreshToken(
                             jwtUser.getId(),
                             refreshTokenStr,
-                            jwtProvider.getRefreshClaims(refreshTokenStr).getIssuedAt().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-                            jwtProvider.getRefreshClaims(refreshTokenStr).getExpiration().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                            jwtProvider.getRefreshClaims(refreshTokenStr).getIssuedAt(),
+                            jwtProvider.getRefreshClaims(refreshTokenStr).getExpiration()
                     );
 
                     // Обновление access токена в базе данных.
