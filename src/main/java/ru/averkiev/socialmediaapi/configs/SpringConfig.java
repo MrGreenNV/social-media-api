@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author mrGreenNV
  */
 @Configuration
-@ComponentScan
-@EnableJpaRepositories
+@ComponentScan(basePackages = "ru.averkiev.socialmediaapi")
+@EnableJpaRepositories(basePackages = "ru.averkiev.socialmediaapi.repositories")
 @EnableTransactionManagement
 public class SpringConfig {
 
