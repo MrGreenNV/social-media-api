@@ -9,10 +9,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.averkiev.socialmediaapi.exceptions.AuthException;
 import ru.averkiev.socialmediaapi.exceptions.TokenNotFoundException;
+import ru.averkiev.socialmediaapi.exceptions.UserNotFoundException;
 import ru.averkiev.socialmediaapi.security.*;
 import ru.averkiev.socialmediaapi.services.AuthService;
-
-import java.time.ZoneId;
 
 /**
  * Класс предоставляет функционал для аутентификации и авторизации пользователей.
@@ -46,8 +45,14 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public JwtResponse login(JwtRequest authRequest) {
 
+        final JwtUser jwtUser;
+
         // Получения пользователя из базы данных по логину.
-        final JwtUser jwtUser = (JwtUser) jwtUserDetailsService.loadUserByUsername(authRequest.getUsername());
+        try {
+            jwtUser = (JwtUser) jwtUserDetailsService.loadUserByUsername(authRequest.getUsername());
+        } catch (UserNotFoundException usfEx) {
+            throw new AuthException("Пользователь с именем: " + authRequest.getUsername() + " не зарегистрирован в системе");
+        }
 
         // Сравнение пароля, полученного из запроса аутентификации с паролем, полученным из базы данных.
         if (passwordEncoder.matches(authRequest.getPassword(), jwtUser.getPassword())) {
