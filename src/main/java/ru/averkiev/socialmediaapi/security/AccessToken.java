@@ -25,7 +25,7 @@ public class AccessToken {
      * @param createdAt дата создания токена.
      * @param expiresAt дата окончания действия токена.
      */
-    public AccessToken(int userId, String accessToken, LocalDate createdAt, LocalDate expiresAt) {
+    public AccessToken(Long userId, String accessToken, LocalDate createdAt, LocalDate expiresAt) {
         this.userId = userId;
         this.accessToken = accessToken;
         this.createdAt = createdAt;
@@ -36,11 +36,11 @@ public class AccessToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     /** Идентификатор пользователя владеющего токеном. */
     @Column(name = "user_id")
-    private int userId;
+    private Long userId;
 
     /** Строковое представления токена. */
     @Column(name = "token")
