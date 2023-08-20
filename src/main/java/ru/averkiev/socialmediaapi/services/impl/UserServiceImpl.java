@@ -3,6 +3,7 @@ package ru.averkiev.socialmediaapi.services.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.averkiev.socialmediaapi.exceptions.RegistrationException;
 import ru.averkiev.socialmediaapi.exceptions.UserNotFoundException;
@@ -28,6 +29,9 @@ public class UserServiceImpl implements UserService {
     /** Репозиторий для обращения к базе данных. */
     private final UserRepository userRepository;
 
+    /** Сервис для взаимодействия с хэшированными паролями. */
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     /**
      * Регистрирует нового пользователя в системе.
      * @param userCreateDTO DTO данные нового пользователя.
@@ -50,6 +54,9 @@ public class UserServiceImpl implements UserService {
             log.error("IN register - пользователь с именем: '{}' не был зарегистрирован", userCreateDTO.getUsername());
             throw new RegistrationException("Пользователь с таким email уже зарегистрирован");
         }
+
+       // Хэширование пароля для безопасности хранения в базе данных.
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         // Вызов метода для сохранения пользователя в БД.
         user = saveUser(user);
