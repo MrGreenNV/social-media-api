@@ -9,6 +9,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import ru.averkiev.socialmediaapi.exceptions.RegistrationException;
 import ru.averkiev.socialmediaapi.models.UserCreateDTO;
@@ -17,6 +20,7 @@ import ru.averkiev.socialmediaapi.services.impl.UserServiceImpl;
 import ru.averkiev.socialmediaapi.utils.ErrorResponse;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Класс представляет собой REST-контроллер для взаимодействия с пользователями в системе.
@@ -74,5 +78,24 @@ public class UserController {
                 .map(user -> modelMapper.map(user, UserFriendDTO.class))
                 .toList();
         return ResponseEntity.ok(userFriendDTOList);
+    }
+
+    /**
+     * Позволяет обработать ошибки связанные с валидацией пользовательских данных.
+     * @param ex ошибки при валидации данных.
+     * @return объект ErrorResponse, содержащий информацию об ошибках.
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorResponse handleValidationException(MethodArgumentNotValidException ex) {
+        BindingResult bindingResult = ex.getBindingResult();
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+
+        List<String> errorMessages = fieldErrors.stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.toList());
+
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Validation failed", errorMessages);
     }
 }
