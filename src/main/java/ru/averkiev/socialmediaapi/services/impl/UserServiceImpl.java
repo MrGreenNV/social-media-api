@@ -44,13 +44,13 @@ public class UserServiceImpl implements UserService {
         User user = modelMapper.map(userCreateDTO, User.class);
 
         // Проверка на дублирование имени пользователя.
-        if (userRepository.existUserByUsername(user.getUsername())) {
+        if (existUserByUsername(user.getUsername())) {
             log.error("IN register - пользователь с именем: '{}' не был зарегистрирован", userCreateDTO.getUsername());
             throw new RegistrationException("Пользователь с таким именем уже зарегистрирован");
         }
 
         // Проверка на дублирование email.
-        if (userRepository.existsUserByEmail(user.getEmail())) {
+        if (existsUserByEmail(user.getEmail())) {
             log.error("IN register - пользователь с именем: '{}' не был зарегистрирован", userCreateDTO.getUsername());
             throw new RegistrationException("Пользователь с таким email уже зарегистрирован");
         }
@@ -59,6 +59,24 @@ public class UserServiceImpl implements UserService {
         user = saveUser(user);
 
         return modelMapper.map(user, UserCreateDTO.class);
+    }
+
+    /**
+     * Проверяет, существует ли пользователь с указанной электронной почтой.
+     * @param email электронная почта проверяемого пользователя.
+     * @return true, если пользователь существует, иначе false.
+     */
+    private boolean existsUserByEmail(String email) {
+        return userRepository.findUserByEmail(email).isPresent();
+    }
+
+    /**
+     * Проверяет, существует ли пользователь с указанным именем.
+     * @param username имя проверяемого пользователя.
+     * @return true, если пользователь существует, иначе false.
+     */
+    private boolean existUserByUsername(String username) {
+        return userRepository.findUserByUsername(username).isPresent();
     }
 
     /**
