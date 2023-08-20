@@ -24,24 +24,16 @@ import java.util.Date;
 @Component
 public class JwtProvider {
 
-    /**
-     * Секретный ключ для подписи токенов доступа.
-     */
+    /** Секретный ключ для подписи токенов доступа. */
     private final SecretKey jwtAccessSecret;
 
-    /**
-     * Секретный ключ для подписи токенов обновления.
-     */
+    /** Секретный ключ для подписи токенов обновления. */
     private final SecretKey jwtRefreshSecret;
 
-    /**
-     * Срок действия access токена.
-     */
+    /** Срок действия access токена. */
     private final long expirationAccessTokenInMinutes;
 
-    /**
-     * Срок действия refresh токена.
-     */
+    /** Срок действия refresh токена. */
     private final long expirationRefreshTokenInDays;
 
     /**
@@ -102,31 +94,52 @@ public class JwtProvider {
     }
 
     /**
-     * Парсит токен.
-     * @param token переданный токен.
+     * Проверяет и возвращает результат проверки токена.
+     * @param token переданный токен, который необходимо проверить.
      * @param secret секретный ключ для разбора токена и проверки его целостности.
+     * @return возвращает результат проверки токена.
+     * @exception ExpiredJwtException выбрасывается если токен недействителен.
+     * @exception UnsupportedJwtException выбрасывается если токен не поддерживается.
+     * @exception MalformedJwtException выбрасывается если токен некорректен.
+     * @exception SignatureException выбрасывается если секретный ключ недействителен.
      */
-    public void parseToken(@NotNull String token, @NotNull Key secret) throws Exception {
-        Jwts.parserBuilder()
-                .setSigningKey(secret)
-                .build()
-                .parseClaimsJws(token);
+    public boolean validateToken(@NotNull String token, @NotNull Key secret) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(secret)
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
+        } catch (ExpiredJwtException expEx) {
+            log.error("Истек срок действия токена", expEx);
+        } catch (UnsupportedJwtException unsEx) {
+            log.error("Неподдерживаемый JWT", unsEx);
+        } catch (MalformedJwtException malEx) {
+            log.error("Некорректный JWT", malEx);
+        } catch (SignatureException sEx) {
+            log.error("Недействительная подпись", sEx);
+        } catch (Exception ex) {
+            log.error("Неправильный токен", ex);
+        }
+        return false;
     }
 
     /**
-     * Парсит токен доступа.
-     * @param accessToken передаваемый токен доступа.
+     * Проверяет и возвращает результат проверки токена доступа.
+     * @param accessToken передаваемый токен доступа, который необходимо проверить.
+     * @return возвращает результат проверки токена доступа.
      */
-    public void parseAccessToken(@NotNull String accessToken) throws Exception {
-        parseToken(accessToken, jwtAccessSecret);
+    public boolean validateAccessToken(@NotNull String accessToken) {
+        return validateToken(accessToken, jwtAccessSecret);
     }
 
     /**
-     * Парсит токен обновления.
+     * Проверяет и возвращает результат проверки токена обновления.
      * @param refreshToken передаваемый токен доступа, который необходимо проверить.
+     * @return возвращает результат проверки токена обновления.
      */
-    public void parseRefreshToken(@NotNull String refreshToken) throws Exception {
-        parseToken(refreshToken, jwtRefreshSecret);
+    public boolean validateRefreshToken(@NotNull String refreshToken) {
+        return validateToken(refreshToken, jwtRefreshSecret);
     }
 
     /**
@@ -160,6 +173,42 @@ public class JwtProvider {
      */
     public Claims getRefreshClaims(@NotNull String refreshToken) {
         return getClaims(refreshToken, jwtRefreshSecret);
+    }
+
+    /**
+     * Извлекает из Claims время окончания токена и сравнивает с текущим временем.
+     * @param accessToken access токен.
+     * @return true если токен просуществовал больше половины отведенного времени, иначе - false.
+     */
+    public boolean isAccessTokenExpired(String accessToken) {
+        Claims claims = this.getAccessClaims(accessToken);
+
+        // Время окончания действия текущего токена.
+        final Date currentAccessExpiration = claims.getExpiration();
+
+        // Текущее время.
+        final Date currentDate = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
+
+        // Если разница текущего времени со временем окончания токена больше половины срока действия токена.
+        return (currentAccessExpiration.getTime() - currentDate.getTime()) <= (expirationAccessTokenInMinutes * 60 * 500);
+    }
+
+    /**
+     * Извлекает из Claims время окончания токена и сравнивает с текущим временем.
+     * @param refreshToken access токен.
+     * @return true если токен просуществовал больше половины отведенного времени, иначе - false.
+     */
+    public boolean isRefreshTokenExpired(String refreshToken) {
+        Claims claims = this.getRefreshClaims(refreshToken);
+
+        // Время окончания действия текущего токена.
+        final Date currentRefreshExpiration = claims.getExpiration();
+
+        // Текущее время.
+        final Date currentDate = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
+
+        // Если разница текущего времени со временем окончания токена больше половины срока действия токена.
+        return (currentRefreshExpiration.getTime() - currentDate.getTime()) <= (expirationRefreshTokenInDays * 24 * 60 * 60 * 500);
     }
 
 }
