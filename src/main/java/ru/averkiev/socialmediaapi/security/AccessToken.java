@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * Класс представляет собой модель access токена.
@@ -25,7 +25,7 @@ public class AccessToken {
      * @param createdAt дата создания токена.
      * @param expiresAt дата окончания действия токена.
      */
-    public AccessToken(Long userId, String accessToken, LocalDate createdAt, LocalDate expiresAt) {
+    public AccessToken(Long userId, String accessToken, Date createdAt, Date expiresAt) {
         this.userId = userId;
         this.accessToken = accessToken;
         this.createdAt = createdAt;
@@ -48,9 +48,9 @@ public class AccessToken {
 
     /** Дата создания токена. */
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private Date createdAt;
 
     /** Дата окончания действия токена. */
     @Column(name = "expires_at")
-    private LocalDate expiresAt;
+    private Date expiresAt;
 }

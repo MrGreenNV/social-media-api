@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * Класс представляет собой модель refresh токена.
@@ -25,7 +25,7 @@ public class RefreshToken {
      * @param createdAt дата создания токена.
      * @param expiresAt дата окончания действия токена.
      */
-    public RefreshToken(Long userId, String refreshToken, LocalDate createdAt, LocalDate expiresAt) {
+    public RefreshToken(Long userId, String refreshToken, Date createdAt, Date expiresAt) {
         this.userId = userId;
         this.refreshToken = refreshToken;
         this.createdAt = createdAt;
@@ -48,9 +48,9 @@ public class RefreshToken {
 
     /** Дата создания токена. */
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private Date createdAt;
 
     /** Дата окончания действия токена. */
     @Column(name = "expires_at")
-    private LocalDate expiresAt;
+    private Date expiresAt;
 }

@@ -5,7 +5,7 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  * Базовый класс сущностей.
@@ -24,15 +24,15 @@ public abstract class BaseEntity {
     /** Время создания сущности. */
     @Column(name = "create_at")
     @CreationTimestamp
-    private LocalDate createdAt;
+    private Date createdAt;
 
     /** Время обновления сущности. */
     @Column(name = "update_at")
     @UpdateTimestamp
-    private LocalDate updateAt;
+    private Date updateAt;
 
     /** Статус сущности в системе. */
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private Status status;
+    private Status status = Status.ACTIVE;
 }
