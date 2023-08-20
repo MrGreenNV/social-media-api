@@ -6,6 +6,7 @@ import ru.averkiev.socialmediaapi.security.AccessToken;
 import java.util.Optional;
 
 /**
+ * Интерфейс представляет собой репозиторий access токенов.
  * @author mrGreenNV
  */
 public interface AccessTokenRepository extends JpaRepository<AccessToken, Long> {

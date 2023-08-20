@@ -3,8 +3,6 @@ package ru.averkiev.socialmediaapi.services;
 import ru.averkiev.socialmediaapi.exceptions.TokenNotFoundException;
 import ru.averkiev.socialmediaapi.security.AccessToken;
 
-import java.util.Optional;
-
 /**
  * Интерфейс представляет собой функционал для сохранения, обновления, поиска и удаления access токена.
  * @author mrGreenNV
@@ -39,5 +37,5 @@ public interface AccessTokenService {
      * @param userId идентификатор пользователя.
      * @throws TokenNotFoundException выбрасывает, если токен не был найден.
      */
-    void delete(long userId) throws TokenNotFoundException ;
+    void delete(long userId) throws TokenNotFoundException;
 }

@@ -18,9 +18,7 @@ import ru.averkiev.socialmediaapi.services.AccessTokenService;
 @RequiredArgsConstructor
 public class AccessTokenServiceImpl implements AccessTokenService {
 
-    /**
-     * Репозиторий для взаимодействия с базой данных.
-     */
+    /** Репозиторий для взаимодействия с базой данных. */
     private final AccessTokenRepository accessTokenRepository;
 
     /**
