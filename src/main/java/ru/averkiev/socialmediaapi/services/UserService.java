@@ -1,6 +1,6 @@
 package ru.averkiev.socialmediaapi.services;
 
-import ru.averkiev.socialmediaapi.exceptions.RegistrationException;
+import ru.averkiev.socialmediaapi.exceptions.UserRegistrationException;
 import ru.averkiev.socialmediaapi.exceptions.UserNotFoundException;
 import ru.averkiev.socialmediaapi.models.User;
 import ru.averkiev.socialmediaapi.models.UserCreateDTO;
@@ -17,9 +17,9 @@ public interface UserService {
      * Регистрирует нового пользователя в системе.
      * @param userCreateDTO DTO данные нового пользователя.
      * @return данные зарегистрированного пользователя.
-     * @throws RegistrationException выбрасывает если регистрация пользователя не удалась по каким-либо причинам.
+     * @throws UserRegistrationException выбрасывает если регистрация пользователя не удалась по каким-либо причинам.
      */
-    UserCreateDTO register(UserCreateDTO userCreateDTO) throws RegistrationException;
+    UserCreateDTO register(UserCreateDTO userCreateDTO) throws UserRegistrationException;
 
     /**
      * Сохраняет нового пользователя в системе.

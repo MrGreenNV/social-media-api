@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.averkiev.socialmediaapi.exceptions.RegistrationException;
+import ru.averkiev.socialmediaapi.exceptions.UserRegistrationException;
 import ru.averkiev.socialmediaapi.exceptions.UserNotFoundException;
 import ru.averkiev.socialmediaapi.models.User;
 import ru.averkiev.socialmediaapi.models.UserCreateDTO;
@@ -36,23 +36,23 @@ public class UserServiceImpl implements UserService {
      * Регистрирует нового пользователя в системе.
      * @param userCreateDTO DTO данные нового пользователя.
      * @return зарегистрированный пользователь.
-     * @throws RegistrationException выбрасывает если регистрация пользователя не удалась по каким-либо причинам.
+     * @throws UserRegistrationException выбрасывает если регистрация пользователя не удалась по каким-либо причинам.
      */
     @Override
-    public UserCreateDTO register(UserCreateDTO userCreateDTO) throws RegistrationException {
+    public UserCreateDTO register(UserCreateDTO userCreateDTO) throws UserRegistrationException {
 
         User user = modelMapper.map(userCreateDTO, User.class);
 
         // Проверка на дублирование имени пользователя.
         if (existUserByUsername(user.getUsername())) {
             log.error("IN register - пользователь с именем: '{}' не был зарегистрирован", userCreateDTO.getUsername());
-            throw new RegistrationException("Пользователь с таким именем уже зарегистрирован");
+            throw new UserRegistrationException("Пользователь с таким именем уже зарегистрирован");
         }
 
         // Проверка на дублирование email.
         if (existsUserByEmail(user.getEmail())) {
             log.error("IN register - пользователь с именем: '{}' не был зарегистрирован", userCreateDTO.getUsername());
-            throw new RegistrationException("Пользователь с таким email уже зарегистрирован");
+            throw new UserRegistrationException("Пользователь с таким email уже зарегистрирован");
         }
 
        // Хэширование пароля для безопасности хранения в базе данных.

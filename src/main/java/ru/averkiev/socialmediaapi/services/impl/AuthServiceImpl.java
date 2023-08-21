@@ -270,4 +270,15 @@ public class AuthServiceImpl implements AuthService {
         }
         return jwtProvider.validateAccessToken(accessToken.getAccessToken());
     }
+
+    @Override
+    public Long getUserIdFromAuthentication() throws AuthException {
+        try {
+            JwtAuthentication authentication = getAuthInfo();
+            JwtUser jwtUser = (JwtUser) jwtUserDetailsService.loadUserByUsername(authentication.getUsername());
+            return jwtUser.getId();
+        } catch (Exception ex) {
+            throw new AuthException("Ошибка при получении идентификатора пользователя из аутентификации.");
+        }
+    }
 }

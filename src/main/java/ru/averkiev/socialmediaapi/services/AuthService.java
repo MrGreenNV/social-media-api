@@ -59,4 +59,11 @@ public interface AuthService {
      */
     boolean validateAccessToken(AccessToken accessToken);
 
+    /**
+     * Позволяет получить идентификатор пользователя из аутентификации.
+     * @return идентификатор пользователя.
+     * @throws AuthException выбрасывает если возникает ошибка аутентификации.
+     */
+    Long getUserIdFromAuthentication() throws AuthException;
+
 }

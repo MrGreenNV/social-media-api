@@ -4,13 +4,13 @@ package ru.averkiev.socialmediaapi.exceptions;
  * Исключение, выбрасывающееся в случае неудавшейся регистрации пользователя в системе.
  * @author mrGreenNV
  */
-public class RegistrationException  extends RuntimeException {
+public class UserRegistrationException extends RuntimeException {
 
     /**
      * Создаёт новый экземпляр исключения с указанным сообщением об ошибке.
      * @param msg - сообщение об ошибке.
      */
-    public RegistrationException(String msg) {
+    public UserRegistrationException(String msg) {
         super(msg);
     }
 
@@ -19,7 +19,7 @@ public class RegistrationException  extends RuntimeException {
      * @param msg   - сообщение об ошибке.
      * @param cause - причина исключения.
      */
-    public RegistrationException(String msg, Throwable cause) {
+    public UserRegistrationException(String msg, Throwable cause) {
         super(msg, cause);
     }
 }

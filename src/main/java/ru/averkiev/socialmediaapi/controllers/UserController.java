@@ -8,12 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import ru.averkiev.socialmediaapi.exceptions.RegistrationException;
+import ru.averkiev.socialmediaapi.exceptions.UserRegistrationException;
 import ru.averkiev.socialmediaapi.models.UserCreateDTO;
 import ru.averkiev.socialmediaapi.models.UserFriendDTO;
 import ru.averkiev.socialmediaapi.services.impl.UserServiceImpl;
@@ -31,7 +30,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/social-media-api/users")
 @RequiredArgsConstructor
-@EnableMethodSecurity
 @Tag(
         name = "UserController",
         description = "Позволяет регистрировать новых пользователей"
@@ -57,7 +55,7 @@ public class UserController {
     public ResponseEntity<?> register(@Valid @RequestBody UserCreateDTO userCreateDTO) {
         try {
             return ResponseEntity.ok(userService.register(userCreateDTO));
-        } catch (RegistrationException regEx) {
+        } catch (UserRegistrationException regEx) {
             ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), regEx.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
