@@ -1,9 +1,7 @@
 package ru.averkiev.socialmediaapi.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,6 +36,11 @@ public class User extends BaseEntity {
     /** Список подписчиков пользователя. */
     @Transient
     private List<User> subscribers;
+
+    /** Список постов пользователя. */
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
 
     /**
      * Позволяет создать объект пользователя с заданными параметрами.
