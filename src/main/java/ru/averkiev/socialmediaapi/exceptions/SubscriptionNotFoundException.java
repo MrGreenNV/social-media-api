@@ -1,16 +1,16 @@
 package ru.averkiev.socialmediaapi.exceptions;
 
 /**
- * Исключение, выбрасываемое в случае если не удалось найти дружескую связь пользователей в базе данных.
+ * Исключение, выбрасываемое в случае если не удалось найти подписчика в базе данных.
  * @author mrGreenNV
  */
-public class UserFriendNotFoundException extends RuntimeException {
+public class SubscriptionNotFoundException extends RuntimeException {
 
     /**
      * Создаёт экземпляр исключения с указанным сообщением об ошибке.
      * @param msg - сообщение об ошибке.
      */
-    public UserFriendNotFoundException(String msg) {
+    public SubscriptionNotFoundException(String msg) {
         super(msg);
     }
 
@@ -19,7 +19,7 @@ public class UserFriendNotFoundException extends RuntimeException {
      * @param msg - сообщение об ошибке.
      * @param cause - причина исключения.
      */
-    public UserFriendNotFoundException(String msg, Throwable cause) {
+    public SubscriptionNotFoundException(String msg, Throwable cause) {
         super(msg, cause);
     }
 }
