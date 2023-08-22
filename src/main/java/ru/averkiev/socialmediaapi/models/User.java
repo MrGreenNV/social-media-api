@@ -29,18 +29,27 @@ public class User extends BaseEntity {
     @Column(name = "email")
     private String email;
 
-    /** Список друзей пользователя. */
-    @Transient
-    private List<User> friends;
+    /** Список отправленных запросов дружбы. */
+    @OneToMany(mappedBy = "toUser")
+    private List<FriendshipRequest> sentFriendshipRequests;
 
-    /** Список подписчиков пользователя. */
-    @Transient
-    private List<User> subscribers;
+    /** Список полученных запросов дружбы. */
+    @OneToMany(mappedBy = "fromUser")
+    private List<FriendshipRequest> receivedFriendshipRequests;
 
     /** Список постов пользователя. */
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
+
+    /** Список подписок пользователя */
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subscription> subscriptions;
+
+    /** Список подписчиков пользователя */
+    @OneToMany(mappedBy = "subscriber", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subscription> subscribers;
 
     /**
      * Позволяет создать объект пользователя с заданными параметрами.

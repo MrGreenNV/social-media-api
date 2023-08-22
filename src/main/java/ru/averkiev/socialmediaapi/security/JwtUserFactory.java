@@ -1,6 +1,6 @@
 package ru.averkiev.socialmediaapi.security;
 
-import ru.averkiev.socialmediaapi.models.Status;
+import ru.averkiev.socialmediaapi.models.EntityStatus;
 import ru.averkiev.socialmediaapi.models.User;
 
 /**
@@ -29,7 +29,7 @@ public class JwtUserFactory {
                 user.getUsername(),
                 user.getPassword(),
                 user.getEmail(),
-                user.getStatus().equals(Status.ACTIVE)
+                user.getEntityStatus().equals(EntityStatus.ACTIVE)
         );
     }
 }

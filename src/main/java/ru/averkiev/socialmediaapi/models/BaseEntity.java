@@ -34,5 +34,5 @@ public abstract class BaseEntity {
     /** Статус сущности в системе. */
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private Status status = Status.ACTIVE;
+    private EntityStatus entityStatus = EntityStatus.ACTIVE;
 }
