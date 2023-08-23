@@ -22,6 +22,7 @@ public class User extends BaseEntity {
     private String username;
 
     /** Хэшированный пароль пользователя. */
+    @JsonIgnore
     @Column(name = "password")
     private String password;
 
@@ -29,18 +30,35 @@ public class User extends BaseEntity {
     @Column(name = "email")
     private String email;
 
-    /** Список друзей пользователя. */
-    @Transient
-    private List<User> friends;
+    /** Список отправленных запросов дружбы. */
+    @JsonIgnore
+    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FriendshipRequest> sentFriendshipRequests;
 
-    /** Список подписчиков пользователя. */
-    @Transient
-    private List<User> subscribers;
+    /** Список полученных запросов дружбы. */
+    @JsonIgnore
+    @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FriendshipRequest> receivedFriendshipRequests;
 
     /** Список постов пользователя. */
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
+
+    /** Список подписок пользователя */
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subscription> subscriptions;
+
+    /** Список подписчиков пользователя */
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subscriber> subscribers;
+
+    /** Список друзей пользователя. */
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserFriend> friends;
 
     /**
      * Позволяет создать объект пользователя с заданными параметрами.

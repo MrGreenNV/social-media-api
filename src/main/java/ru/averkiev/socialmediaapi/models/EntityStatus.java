@@ -4,7 +4,7 @@ package ru.averkiev.socialmediaapi.models;
  * Статус сущностей в системе.
  * @author mrGreenNV
  */
-public enum Status {
+public enum EntityStatus {
 
     /** Сущность активна. */
     ACTIVE,
