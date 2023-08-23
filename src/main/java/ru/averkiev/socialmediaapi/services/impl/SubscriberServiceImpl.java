@@ -33,7 +33,7 @@ public class SubscriberServiceImpl implements SubscriberService {
     public Subscriber save(User user, User subscribedUser) {
         Subscriber subscriber = new Subscriber(user, subscribedUser);
         subscriber = subscriberRepository.save(subscriber);
-        log.info("IN save - подписка пользователя^ {} на пользователя: {} успешно сохранена", user.getUsername(), subscribedUser.getUsername());
+        log.info("IN save - подписка пользователя: {} на пользователя: {} успешно сохранена", user.getUsername(), subscribedUser.getUsername());
         return subscriber;
     }
 
@@ -63,7 +63,7 @@ public class SubscriberServiceImpl implements SubscriberService {
     @Override
     public List<Subscriber> findAllByUser(User user) {
         List<Subscriber> subscribers = subscriberRepository.findAll();
-        log.info("IN findAllByUser - список подписок пользователя успешно получен");
+        log.info("IN findAllByUser - список подписок пользователя: {} успешно получен", user.getUsername());
         return subscribers;
     }
 
