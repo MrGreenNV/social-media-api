@@ -1,11 +1,10 @@
 package ru.averkiev.socialmediaapi.services;
 
-import ru.averkiev.socialmediaapi.exceptions.FriendshipRequestNotFoundException;
-import ru.averkiev.socialmediaapi.exceptions.SubscriberNotFoundException;
-import ru.averkiev.socialmediaapi.exceptions.SubscriptionNotFoundException;
-import ru.averkiev.socialmediaapi.exceptions.UserFriendNotFoundException;
+import ru.averkiev.socialmediaapi.exceptions.*;
 import ru.averkiev.socialmediaapi.models.FriendshipRequest;
 import ru.averkiev.socialmediaapi.models.User;
+
+import java.util.List;
 
 /**
  * Интерфейс предоставляет функционал для взаимодействия пользователей с запросами на дружбу.
@@ -17,9 +16,9 @@ public interface FriendshipRequestService {
      * Позволяет пользователю отправить запрос с предложением дружбы.
      * @param fromUser отправитель запроса.
      * @param toUser получатель запроса.
-     * @return объект FriendshipRequest с информацией о запросе.
+     * @throws FriendshipRequestCreateException, выбрасывает, если возникла ошибка при создании заявки.
      */
-    FriendshipRequest sendFriendRequest(User fromUser, User toUser);
+    void sendFriendRequest(User fromUser, User toUser) throws FriendshipRequestCreateException;
 
     /**
      * Позволяет пользователю принять запрос на дружбу.
@@ -30,9 +29,9 @@ public interface FriendshipRequestService {
     /**
      * Позволяет пользователю отклонить запрос на дружбу.
      * @param request объект FriendshipRequest, содержащий информацию о запросе.
-     * @throws UserFriendNotFoundException выбрасывает, если дружеская связь не найдена.
+     * @throws FriendshipRequestNotFoundException выбрасывает, если запрос дружбы не найден.
      */
-    void declineFriendshipRequest(FriendshipRequest request);
+    void declineFriendshipRequest(FriendshipRequest request) throws FriendshipRequestNotFoundException;
 
     /**
      * Позволяет выполнить поиск дружеской связи между пользователями.
@@ -52,5 +51,20 @@ public interface FriendshipRequestService {
      * @throws SubscriberNotFoundException выбрасывает, если подписка не найдена.
      * @throws SubscriptionNotFoundException выбрасывает, если подписчик не найден.
      */
-    void cancelFriendshipRequest(User user, User friend) throws FriendshipRequestNotFoundException, SubscriberNotFoundException, SubscriptionNotFoundException;
+    void cancelFriendshipRequest(User user, User friend) throws FriendshipRequestNotFoundException, SubscriberNotFoundException, SubscriptionNotFoundException, UserFriendNotFoundException;
+
+    /**
+     * Позволяет получить список отправленных заявок, которые еще не подтверждены.
+     * @param user пользователь отправивших заявки.
+     * @return список заявок.
+     */
+    List<FriendshipRequest> getSentPendingFriendshipRequests(User user);
+
+    /**
+     * Позволяет получить список полученных заявок, которые еще не подтверждены.
+     * @param user пользователь получивший заявки.
+     * @return список заявок.
+     */
+    List<FriendshipRequest> getReceivedPendingFriendshipRequests(User user);
+
 }

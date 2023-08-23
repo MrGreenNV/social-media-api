@@ -22,6 +22,7 @@ public class User extends BaseEntity {
     private String username;
 
     /** Хэшированный пароль пользователя. */
+    @JsonIgnore
     @Column(name = "password")
     private String password;
 
