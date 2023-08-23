@@ -128,9 +128,9 @@ public class FriendshipRequestServiceImpl implements FriendshipRequestService {
             throws FriendshipRequestNotFoundException, UserFriendNotFoundException, SubscriberNotFoundException, SubscriptionNotFoundException {
 
         // Удаление запроса на дружбу.
-        FriendshipRequest friendshipRequest = findFriendshipRequest(user, friend);
-        friendshipRequestRepository.delete(friendshipRequest);
-        log.info("IN cancelFriendshipRequest - запрос на дружбу успешно удален");
+//        FriendshipRequest friendshipRequest = findFriendshipRequest(user, friend);
+//        friendshipRequestRepository.delete(friendshipRequest);
+//        log.info("IN cancelFriendshipRequest - запрос на дружбу успешно удален");
 
         // Удаление дружественной связи.
         userFriendService.deleteByUserAndFriend(user, friend);

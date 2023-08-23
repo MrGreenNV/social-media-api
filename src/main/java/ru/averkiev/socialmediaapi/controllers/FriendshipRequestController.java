@@ -11,7 +11,6 @@ import ru.averkiev.socialmediaapi.exceptions.*;
 import ru.averkiev.socialmediaapi.models.FriendshipRequest;
 import ru.averkiev.socialmediaapi.models.FriendshipRequestDTO;
 import ru.averkiev.socialmediaapi.models.User;
-import ru.averkiev.socialmediaapi.models.UserFriendDTO;
 import ru.averkiev.socialmediaapi.services.impl.AuthServiceImpl;
 import ru.averkiev.socialmediaapi.services.impl.FriendshipRequestServiceImpl;
 import ru.averkiev.socialmediaapi.services.impl.UserServiceImpl;
@@ -131,7 +130,7 @@ public class FriendshipRequestController {
     )
     public ResponseEntity<?> declineFriendRequest(@RequestBody FriendshipRequestDTO requestDTO) {
         try {
-            User fromUser = userService.getUserById(requestDTO.getToUserId());
+            User fromUser = userService.getUserById(requestDTO.getFromUserId());
             User toUser = userService.getUserById(requestDTO.getToUserId());
 
             FriendshipRequest request = friendshipRequestService.findFriendshipRequest(fromUser, toUser);
@@ -146,7 +145,7 @@ public class FriendshipRequestController {
 
     /**
      * API-endpoint для удаления дружеской связи.
-     * @param userFriendDTO DTO дружеской связи содержащей идентификаторы пользователей.
+     * @param requestDTO DTO запрос содержащий информацию об идентификаторах пользователей.
      * @return статус запроса или сообщение об ошибке.
      */
     @PostMapping("/delete")
@@ -155,10 +154,10 @@ public class FriendshipRequestController {
             summary = "Удаление дружеской связи между пользователями",
             description = "Удаляет дружескую связь, запрос на дружбу и отписывается от удаляемого пользователя"
     )
-    public ResponseEntity<?> deleteFriendship(@RequestBody UserFriendDTO userFriendDTO) {
+    public ResponseEntity<?> deleteFriendship(@RequestBody FriendshipRequestDTO requestDTO) {
         try {
-            User fromUser = userService.getUserByUsername(userFriendDTO.getUsername());
-            User toUser = userService.getUserByUsername(userFriendDTO.getUsername());
+            User fromUser = userService.getUserById(requestDTO.getFromUserId());
+            User toUser = userService.getUserById(requestDTO.getToUserId());
 
             friendshipRequestService.cancelFriendshipRequest(fromUser, toUser);
             return ResponseEntity.status(HttpStatus.OK).build();

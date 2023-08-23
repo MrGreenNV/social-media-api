@@ -52,7 +52,7 @@ public class UserFriendServiceImpl implements UserFriendService {
             throw new UserFriendNotFoundException("Дружеская связь пользователей: " + user.getUsername() + " и " + friend.getUsername() + " не найдена.");
         }
         log.info("IN findByUserAndFriend - связь пользователя: {} с пользователем: {} успешно найдена", user.getUsername(), friend.getUsername());
-        return null;
+        return userFriend;
     }
 
     /**
@@ -93,6 +93,7 @@ public class UserFriendServiceImpl implements UserFriendService {
     @Override
     public void deleteByUserAndFriend(User user, User friend) throws UserFriendNotFoundException {
         UserFriend userFriend = findByUserAndFriend(user, friend);
+        System.out.println("ID: " + userFriend.getId());
         delete(userFriend);
     }
 }
