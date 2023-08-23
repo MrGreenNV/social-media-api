@@ -27,7 +27,7 @@ public interface SubscriberService {
      * @return объект Subscriber, содержащий данный о подписке.
      * @throws SubscriberNotFoundException выбрасывает, если подписка не найдена.
      */
-    Subscriber findByUserAndSubscription(User user, User subscribedUser) throws SubscriberNotFoundException;
+    Subscriber findByUserAndSubscribedUser(User user, User subscribedUser) throws SubscriberNotFoundException;
 
     /**
      * Позволяет получить список всех подписок конкретного пользователя.
