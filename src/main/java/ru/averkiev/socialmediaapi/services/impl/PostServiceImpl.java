@@ -49,12 +49,6 @@ public class PostServiceImpl implements PostService {
 
         post.setUser(userService.getUserById(authService.getUserIdFromAuthentication()));
 
-//        // Проверка прав для добавления изображения.
-//        if (!authService.getUserIdFromAuthentication().equals(post.getUser().getId())) {
-//            log.error("IN addImage - ошибка при создании поста. Недостаточно прав для сохранения");
-//            throw new AuthException("Недостаточно прав для создания поста");
-//        }
-
         try {
             post = postRepository.save(post);
             log.info("IN createPost - пост пользователя с идентификатором: {} успешно создан", post.getUser().getId());

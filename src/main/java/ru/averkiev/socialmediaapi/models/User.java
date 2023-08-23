@@ -30,11 +30,13 @@ public class User extends BaseEntity {
     private String email;
 
     /** Список отправленных запросов дружбы. */
-    @OneToMany(mappedBy = "toUser")
+    @JsonIgnore
+    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FriendshipRequest> sentFriendshipRequests;
 
     /** Список полученных запросов дружбы. */
-    @OneToMany(mappedBy = "fromUser")
+    @JsonIgnore
+    @OneToMany(mappedBy = "toUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FriendshipRequest> receivedFriendshipRequests;
 
     /** Список постов пользователя. */
@@ -48,8 +50,14 @@ public class User extends BaseEntity {
     private List<Subscription> subscriptions;
 
     /** Список подписчиков пользователя */
-    @OneToMany(mappedBy = "subscriber", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Subscription> subscribers;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Subscriber> subscribers;
+
+    /** Список друзей пользователя. */
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserFriend> friends;
 
     /**
      * Позволяет создать объект пользователя с заданными параметрами.
