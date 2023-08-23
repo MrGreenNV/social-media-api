@@ -75,7 +75,7 @@ public class UserFriendServiceImpl implements UserFriendService {
     @Override
     public void delete(UserFriend userFriend) throws UserFriendNotFoundException {
 
-        if (!userFriendRepository.exists(userFriend)) {
+        if (!userFriendRepository.existsById(userFriend.getId())) {
             log.error("IN findByUserAndFriend - связь пользователя: {} с пользователем: {} не удалена", userFriend.getUser().getUsername(), userFriend.getFriend().getUsername());
             throw new UserFriendNotFoundException("Дружеская связь пользователей: " + userFriend.getUser().getUsername() + " и " + userFriend.getFriend().getUsername() + " не найдена.");
         }

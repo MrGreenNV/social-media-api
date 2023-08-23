@@ -40,9 +40,13 @@ public class FriendshipRequestServiceImpl implements FriendshipRequestService {
     @Override
     public void sendFriendRequest(User fromUser, User toUser) throws FriendshipRequestCreateException {
         // Проверка на существование такой заявки.
-        if (findFriendshipRequest(fromUser, toUser) != null) {
-            log.error("IN sendFriendRequest - запрос на дружбу не создан");
-            throw new FriendshipRequestCreateException("Запрос на дружбу от пользователя: " + fromUser.getUsername() + " к пользователю " + toUser.getUsername() + " уже существует");
+        try {
+            if (findFriendshipRequest(fromUser, toUser) != null) {
+                log.error("IN sendFriendRequest - запрос на дружбу не создан");
+                throw new FriendshipRequestCreateException("Запрос на дружбу от пользователя: " + fromUser.getUsername() + " к пользователю " + toUser.getUsername() + " уже существует");
+            }
+        } catch (FriendshipRequestNotFoundException fnfEx) {
+            log.info("IN sendFriendRequest - дубликат запроса отсутствует");
         }
 
         // Создание нового запроса.
@@ -68,6 +72,12 @@ public class FriendshipRequestServiceImpl implements FriendshipRequestService {
      */
     @Override
     public void acceptFriendshipRequest(FriendshipRequest request) {
+
+        if (request.getStatus() != FriendshipRequestStatus.PENDING) {
+            log.error("IN acceptFriendshipRequest - статус заявки не соответствует запросу");
+            throw new FriendshipRequestAcceptException("Статус заявки на дружбу не соответствует запросу на принятие заявки. Текущий статус: " + request.getStatus() + ". Ожидаемый статус: " +  FriendshipRequestStatus.PENDING);
+        }
+
         User fromUser = request.getFromUser();
         User toUser = request.getToUser();
 
@@ -81,10 +91,10 @@ public class FriendshipRequestServiceImpl implements FriendshipRequestService {
         log.info("IN acceptFriendshipRequest - запрос на дружбу успешно принят");
 
         // Сохранение подписки.
-        subscriptionService.save(toUser, fromUser);
+        subscriptionService.save(fromUser, toUser);
 
         // Сохранение подписчика.
-        subscriberService.save(fromUser, toUser);
+        subscriberService.save(toUser, fromUser);
     }
 
     /**

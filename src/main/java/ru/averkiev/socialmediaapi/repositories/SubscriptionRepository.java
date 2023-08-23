@@ -22,10 +22,4 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
      */
     Optional<Subscription> findSubscriptionByUserAndFollower(User user, User follower);
 
-    /**
-     * Выполняет проверку существования записи о подписке в базе данных.
-     * @param subscription информация о подписчике пользователя.
-     * @return true, если удалось найти запись, иначе - false.
-     */
-    boolean exists(Subscription subscription);
 }

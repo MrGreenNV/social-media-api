@@ -22,10 +22,4 @@ public interface UserFriendRepository extends JpaRepository<UserFriend, Long> {
      */
     Optional<UserFriend> findUserFriendByUserAndFriend(User user, User friend);
 
-    /**
-     * Выполняет проверку существования записи о дружеской связи между пользователями в базе данных.
-     * @param userFriend информация о дружеской связи.
-     * @return true, если удалось найти запись, иначе - false.
-     */
-    boolean exists(UserFriend userFriend);
 }

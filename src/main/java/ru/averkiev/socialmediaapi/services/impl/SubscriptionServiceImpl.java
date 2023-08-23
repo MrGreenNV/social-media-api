@@ -75,7 +75,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public void delete(Subscription subscription) throws SubscriptionNotFoundException {
 
-        if (!subscriptionRepository.exists(subscription)) {
+        if (!subscriptionRepository.existsById(subscription.getId())) {
             log.error("IN delete - подписка на пользователя подписчика: {} не удалена", subscription.getFollower().getUsername());
             throw new SubscriptionNotFoundException("Подписка на пользователя: " + subscription.getUser().getUsername() + " не найдена");
         }

@@ -27,7 +27,7 @@ import java.util.List;
  * @author mrGreenNV
  */
 @RestController
-@RequestMapping("/friendship-requests")
+@RequestMapping("/social-media-api/friendship-requests")
 @RequiredArgsConstructor
 @Tag(
         name = "FriendshipRequestController",
@@ -79,8 +79,8 @@ public class FriendshipRequestController {
     )
     public ResponseEntity<?> sendFriendRequest(@RequestBody FriendshipRequestDTO requestDTO) {
         try {
-            User fromUser = userService.getUserById(requestDTO.getFromUser());
-            User toUser = userService.getUserById(requestDTO.getToUser());
+            User fromUser = userService.getUserById(requestDTO.getFromUserId());
+            User toUser = userService.getUserById(requestDTO.getToUserId());
 
             friendshipRequestService.sendFriendRequest(fromUser, toUser);
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -104,8 +104,8 @@ public class FriendshipRequestController {
     )
     public ResponseEntity<?> acceptFriendRequest(@RequestBody FriendshipRequestDTO requestDTO) {
         try {
-            User fromUser = userService.getUserById(requestDTO.getToUser());
-            User toUser = userService.getUserById(requestDTO.getToUser());
+            User fromUser = userService.getUserById(requestDTO.getFromUserId());
+            User toUser = userService.getUserById(requestDTO.getToUserId());
 
             FriendshipRequest request = friendshipRequestService.findFriendshipRequest(fromUser, toUser);
             friendshipRequestService.acceptFriendshipRequest(request);
@@ -113,6 +113,8 @@ public class FriendshipRequestController {
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (FriendshipRequestNotFoundException | UserNotFoundException nfEx) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), nfEx.getMessage()));
+        } catch (FriendshipRequestAcceptException faEx) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), faEx.getMessage()));
         }
     }
 
@@ -129,8 +131,8 @@ public class FriendshipRequestController {
     )
     public ResponseEntity<?> declineFriendRequest(@RequestBody FriendshipRequestDTO requestDTO) {
         try {
-            User fromUser = userService.getUserById(requestDTO.getToUser());
-            User toUser = userService.getUserById(requestDTO.getToUser());
+            User fromUser = userService.getUserById(requestDTO.getToUserId());
+            User toUser = userService.getUserById(requestDTO.getToUserId());
 
             FriendshipRequest request = friendshipRequestService.findFriendshipRequest(fromUser, toUser);
             friendshipRequestService.acceptFriendshipRequest(request);

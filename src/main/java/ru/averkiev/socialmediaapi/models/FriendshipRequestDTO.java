@@ -10,8 +10,8 @@ import lombok.Data;
 public class FriendshipRequestDTO {
 
     /** Идентификатор пользователя от которого поступил запрос на дружбу. */
-    private Long fromUser;
+    private Long fromUserId;
 
     /** Идентификатор пользователя, которому поступил запрос на дружбу. */
-    private Long toUser;
+    private Long toUserId;
 }
