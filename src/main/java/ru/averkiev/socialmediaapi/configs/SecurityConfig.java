@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/social-media-api/users/register", "social-media-api/users/{username}", "/social-media-api/auth/login", "/dummy").permitAll()
+                        .requestMatchers("/social-media-api/users/register", "/social-media-api/auth/login", "/swagger-ui/index.html#/", "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class);
