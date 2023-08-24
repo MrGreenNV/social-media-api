@@ -61,37 +61,60 @@ public class MessageServiceImpl implements MessageService {
 
     /**
      * Позволяет отредактировать текст сообщения.
-     * @param editMessageDTO DTO сообщения с отредактированным текстом.
+     * @param messageId идентификатор сообщения.
+     * @param editContent отредактированный контент сообщения.
      * @return DTO отредактированного сообщения.
      * @throws MessageNotFoundException выбрасывает, если сообщение не найдено.
+     * @throws AuthException выбрасывает, если недостаточно прав для редактирования сообщения.
      */
     @Override
-    public MessageDTO editMessage(MessageDTO editMessageDTO) throws MessageNotFoundException {
-        Message message = messageRepository.findById(editMessageDTO.getId()).orElse(null);
+    public MessageDTO editMessage(Long messageId, String editContent) throws MessageNotFoundException, AuthException {
+
+        Message message = messageRepository.findById(messageId).orElse(null);
         if (message == null) {
-            log.error("IN editMessage - сообщение с идентификатором: {} не изменено", editMessageDTO.getId());
-            throw new MessageNotFoundException("Сообщение с идентификатором: " + editMessageDTO.getId() + " не найдено");
+            log.error("IN editMessage - сообщение с идентификатором: {} не изменено", messageId);
+            throw new MessageNotFoundException("Сообщение с идентификатором: " + messageId + " не найдено");
         }
 
-        message.setContent(editMessageDTO.getContent());
-        editMessageDTO.setContent(messageRepository.save(message).getContent());
+        if (!authService.getUserIdFromAuthentication().equals(message.getSender().getId())) {
+            log.info("IN editMessage - сообщение с идентификатором: {} не изменено", messageId);
+            throw new AuthException("Недостаточно прав для редактирования сообщения.");
+        }
+
+        message.setContent(editContent);
+        message = messageRepository.save(message);
+
+        MessageDTO messageDTO = new MessageDTO();
+        messageDTO.setId(message.getId());
+        messageDTO.setSenderId(message.getSender().getId());
+        messageDTO.setReceiverId(message.getReceiver().getId());
+        messageDTO.setContent(message.getContent());
         log.info("IN editMessage - сообщение с идентификатором: {} успешно изменено", message.getId());
-        return editMessageDTO;
+        return messageDTO;
     }
 
     /**
      * Позволяет удалить сообщение между пользователями.
-     * @param messageDTO DTO сообщения с данными о пользователях и контенте.
+     * @param messageId идентификатор удаляемого сообщения.
      * @throws MessageNotFoundException выбрасывает, если сообщение не найдено.
+     * @throws AuthException выбрасывает, если недостаточно прав для удаления сообщения.
      */
     @Override
-    public void deleteMessage(MessageDTO messageDTO) throws MessageNotFoundException {
-        if (!messageRepository.existsById(messageDTO.getId())) {
-            log.error("IN deleteMessage - сообщение с идентификатором: {} не удалено", messageDTO.getId());
-            throw new MessageNotFoundException("Сообщение с идентификатором: " + messageDTO.getId() + " не найдено");
+    public void deleteMessage(Long messageId) throws MessageNotFoundException, AuthException {
+
+        Message message = messageRepository.findById(messageId).orElse(null);
+        if (message == null) {
+            log.error("IN deleteMessage - сообщение с идентификатором: {} не удалено", messageId);
+            throw new MessageNotFoundException("Сообщение с идентификатором: " + messageId + " не найдено");
         }
-        messageRepository.deleteById(messageDTO.getId());
-        log.info("IN deleteMessage - сообщение с идентификатором: {} успешно удалено", messageDTO.getId());
+
+        if (!authService.getUserIdFromAuthentication().equals(message.getSender().getId())) {
+            log.error("IN deleteMessage - сообщение с идентификатором: {} не удалено", messageId);
+            throw new AuthException("Недостаточно прав для удаления сообщения");
+        }
+
+        messageRepository.deleteById(messageId);
+        log.info("IN deleteMessage - сообщение с идентификатором: {} успешно удалено", messageId);
     }
 
     /**
@@ -107,7 +130,9 @@ public class MessageServiceImpl implements MessageService {
         User user = userService.getUserById(authService.getUserIdFromAuthentication());
         User interlocutor = userService.getUserById(interlocutorId);
 
-        List<Message> messagesByUser = messageRepository.findAllBySenderAndReceiverOrderByCreatedAt(user, interlocutor);
+        List<Message> messagesByUser = messageRepository.findAllBySenderAndReceiverOrReceiverAndSenderOrderByCreatedAt(
+                user, interlocutor, user, interlocutor
+        );
 
         List<MessageDTO> messageDTOList = new ArrayList<>();
 
@@ -125,8 +150,13 @@ public class MessageServiceImpl implements MessageService {
         return messageDTOList;
     }
 
+    /**
+     * Позволяет получить список собеседников пользователя.
+     * @return список DTO объектов содержащих данные на собеседников.
+     * @throws AuthException выбрасывает если при аутентификации пользователя возникает ошибка.
+     */
     @Override
-    public List<UserDTO> getConversationsForUser() {
+    public List<UserDTO> getConversationsForUser() throws AuthException {
 
         User user = userService.getUserById(authService.getUserIdFromAuthentication());
 
@@ -161,7 +191,7 @@ public class MessageServiceImpl implements MessageService {
 
             conversations.add(userDTO);
         }
-        log.info("IN getConversationsForUser - список бесед пользователя: {} успешно получен", user.getUsername());
+        log.info("IN getConversationsForUser - список собеседников пользователя: {} успешно получен", user.getUsername());
         return conversations;
     }
 }

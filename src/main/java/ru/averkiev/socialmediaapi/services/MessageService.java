@@ -25,18 +25,21 @@ public interface MessageService {
 
     /**
      * Позволяет отредактировать текст сообщения.
-     * @param editMessageDTO DTO сообщения с отредактированным текстом.
+     * @param messageId идентификатор сообщения.
+     * @param editContent отредактированный контент сообщения.
      * @return DTO отредактированного сообщения.
      * @throws MessageNotFoundException выбрасывает, если сообщение не найдено.
+     * @throws AuthException выбрасывает, если недостаточно прав для редактирования сообщения.
      */
-    MessageDTO editMessage(MessageDTO editMessageDTO) throws MessageNotFoundException;
+    MessageDTO editMessage(Long messageId, String editContent) throws MessageNotFoundException, AuthException;
 
     /**
      * Позволяет удалить сообщение между пользователями.
-     * @param messageDTO DTO сообщения с данными о пользователях и контенте.
+     * @param messageId идентификатор удаляемого сообщения.
      * @throws MessageNotFoundException выбрасывает, если сообщение не найдено.
+     * @throws AuthException выбрасывает, если недостаточно прав для удаления сообщения.
      */
-    void deleteMessage(MessageDTO messageDTO) throws MessageNotFoundException;
+    void deleteMessage(Long messageId) throws MessageNotFoundException, AuthException;
 
     /**
      * Позволяет получить переписку между авторизованным пользователем и конкретным собеседником.
@@ -50,6 +53,7 @@ public interface MessageService {
     /**
      * Позволяет получить список собеседников пользователя.
      * @return список DTO объектов содержащих данные на собеседников.
+     * @throws AuthException выбрасывает если при аутентификации пользователя возникает ошибка.
      */
-    List<UserDTO> getConversationsForUser();
+    List<UserDTO> getConversationsForUser() throws AuthException;
 }

@@ -16,11 +16,13 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
     /**
      * Выполняет поиск всех сообщений пользователя с собеседником.
-     * @param user пользователь.
-     * @param interlocutor собеседник.
+     * @param user1 пользователь.
+     * @param user2 пользователь.
+     * @param interlocutor1 собеседник.
+     * @param interlocutor2 собеседник.
      * @return список объектов Message с данными сообщений.
      */
-    List<Message> findAllBySenderAndReceiverOrderByCreatedAt(User user, User interlocutor);
+    List<Message> findAllBySenderAndReceiverOrReceiverAndSenderOrderByCreatedAt(User user1, User interlocutor1, User user2, User interlocutor2);
 
     /**
      * Выполняет поиск сообщений в которых пользователь является отправителем и сортирует по дате в порядке убывания.
