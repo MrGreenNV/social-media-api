@@ -2,6 +2,7 @@ package ru.averkiev.socialmediaapi.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.averkiev.socialmediaapi.exceptions.AuthException;
 import ru.averkiev.socialmediaapi.exceptions.ImageNotFoundException;
@@ -243,5 +244,26 @@ public class PostServiceImpl implements PostService {
         List<Post> posts = postRepository.findAllByUserId(userId);
         log.info("IN showAllPostsByUser - список постов для пользователя с идентификатором: {} успешно получен", userId);
         return posts;
+    }
+
+    /**
+     * Позволяет получить список всех постов отсортированных по дате создания.
+     * @param pageRequest пагинация запроса.
+     * @return список объектов Post.
+     */
+    @Override
+    public List<Post> getAllPostByCreateAt(PageRequest pageRequest) {
+        return postRepository.findLatestPosts(pageRequest);
+    }
+
+    /**
+     * Позволяет получить список постов по идентификаторам их создателей сортируя по дате.
+     * @param userIds список идентификаторов создателей постов.
+     * @param pageRequest пагинация запроса.
+     * @return список объектов Post.
+     */
+    @Override
+    public List<Post> getPostByUserIds(List<Long> userIds, PageRequest pageRequest) {
+        return postRepository.findByUserIdInOrderByCreatedAtDesc(userIds, pageRequest);
     }
 }
