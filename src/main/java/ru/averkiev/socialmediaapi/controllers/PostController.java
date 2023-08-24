@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -149,20 +150,42 @@ public class PostController {
 
     /**
      * API-endpoint для вывода списка постов аутентифицированного пользователя.
+     * @param page номер отображаемой страницы.
+     * @param pageSize количество отображаемых постов на странице.
      * @return список постов или ошибку, если аутентификация не была пройдена.
      */
     @GetMapping()
     @SecurityRequirement(name = "JWT")
     @Operation(
-            summary = "Получение списка постов",
-            description = "Позволяет получить список постов для текущего пользователя"
+            summary = "Получение списка постов пользователя",
+            description = "Позволяет получить список постов текущего пользователя"
     )
-    public ResponseEntity<?> getAllPostsByUser() {
+    public ResponseEntity<?> getAllPostsByUser(@RequestParam int page, @RequestParam int pageSize) {
         try {
-            List<Post> posts = postService.showAllPostsByUser();
+            List<Post> posts = postService.showAllPostsByUser(PageRequest.of(page, pageSize));
             return ResponseEntity.status(HttpStatus.OK).body(posts);
         } catch (AuthException authEx) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), authEx.getMessage()));
+        }
+    }
+
+    /**
+     * API-endpoint для получения списка всех постов отсортированных по дате создания.
+     * @param page номер отображаемой страницы.
+     * @param pageSize количество отображаемых постов на странице.
+     * @return список объектов Post или сообщение об ошибке.
+     */
+    @GetMapping("/all")
+    @SecurityRequirement(name = "JWT")
+    @Operation(
+            summary = "Получения списка всех постов",
+            description = "Позволяет получить список всех постов отсортированных по дате создания"
+    )
+    public ResponseEntity<?> getAllPosts(@RequestParam int page, int pageSize) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(postService.getAllPostByCreateAt(PageRequest.of(page, pageSize)));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage()));
         }
     }
 }

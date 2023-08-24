@@ -60,10 +60,11 @@ public interface PostService {
 
     /**
      * Позволяет посмотреть все посты пользователя.
+     * @param pageRequest пагинация запроса.
      * @return список постов.
      * @throws AuthException выбрасывает, если произошла ошибка при получении данных из аутентификации пользователя.
      */
-    List<Post> showAllPostsByUser();
+    List<Post> showAllPostsByUser(PageRequest pageRequest);
 
     /**
      * Позволяет получить список всех постов отсортированных по дате создания.

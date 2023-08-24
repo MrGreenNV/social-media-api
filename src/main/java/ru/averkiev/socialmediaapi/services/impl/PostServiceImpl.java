@@ -232,7 +232,7 @@ public class PostServiceImpl implements PostService {
      * @throws AuthException выбрасывает, если произошла ошибка при получении данных из аутентификации пользователя.
      */
     @Override
-    public List<Post> showAllPostsByUser() throws AuthException {
+    public List<Post> showAllPostsByUser(PageRequest pageRequest) throws AuthException {
         Long userId;
         try {
             userId = authService.getUserIdFromAuthentication();
@@ -241,7 +241,7 @@ public class PostServiceImpl implements PostService {
             throw new AuthException("Ошибка при получении данных об аутентифицированном пользователе");
         }
 
-        List<Post> posts = postRepository.findAllByUserId(userId);
+        List<Post> posts = postRepository.findAllByUserId(userId, pageRequest);
         log.info("IN showAllPostsByUser - список постов для пользователя с идентификатором: {} успешно получен", userId);
         return posts;
     }
