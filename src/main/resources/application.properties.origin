@@ -10,3 +10,8 @@ spring.mvc.pathmatch.matching-strategy = ANT_PATH_MATCHER
 
 jwt.secret.access=
 jwt.secret.refresh=
+
+# minutes
+jwt.expiration.access=
+# days
+jwt.expiration.refresh=
