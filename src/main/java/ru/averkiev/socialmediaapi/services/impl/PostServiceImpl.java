@@ -253,7 +253,7 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public List<Post> getAllPostByCreateAt(PageRequest pageRequest) {
-        return postRepository.findLatestPosts(pageRequest);
+        return postRepository.findAllByOrderByCreatedAtDesc(pageRequest);
     }
 
     /**

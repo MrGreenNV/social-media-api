@@ -1,5 +1,6 @@
 package ru.averkiev.socialmediaapi.models;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -7,8 +8,10 @@ import lombok.Data;
  * @author mrGreenNV
  */
 @Data
+@Schema(description = "DTO сущности отредактированного сообщения")
 public class MessageEditDTO {
 
     /** Контент сообщения. */
+    @Schema(description = "Отредактированный контент сообщения")
     private String content;
 }

@@ -27,7 +27,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      * @param pageRequest пагинация запроса.
      * @return список объектов Post.
      */
-    List<Post> findLatestPosts(PageRequest pageRequest);
+    List<Post> findAllByOrderByCreatedAtDesc(PageRequest pageRequest);
 
     /**
      * Выполняет поиск постов по идентификаторам их создателей сортируя по дате.
