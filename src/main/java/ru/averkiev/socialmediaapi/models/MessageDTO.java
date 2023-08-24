@@ -13,10 +13,10 @@ public class MessageDTO {
     private Long id;
 
     /** Идентификатор отправителя. */
-    private Long sender_id;
+    private Long senderId;
 
     /** Идентификатор получателя. */
-    private Long receiver_id;
+    private Long receiverId;
 
     /** Текст сообщения. */
     private String content;

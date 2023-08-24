@@ -1,5 +1,6 @@
 package ru.averkiev.socialmediaapi.services;
 
+import ru.averkiev.socialmediaapi.exceptions.AuthException;
 import ru.averkiev.socialmediaapi.exceptions.MessageNotFoundException;
 import ru.averkiev.socialmediaapi.exceptions.UserNotFoundException;
 import ru.averkiev.socialmediaapi.models.MessageDTO;
@@ -39,15 +40,16 @@ public interface MessageService {
 
     /**
      * Позволяет получить переписку между авторизованным пользователем и конкретным собеседником.
-     * @param interlocutor собеседник.
+     * @param interlocutorId идентификатор собеседника.
      * @return список DTO объектом содержащий сообщения между пользователями.
+     * @throws UserNotFoundException выбрасывает, если пользователь не найден.
+     * @throws AuthException выбрасывает, если возникнет ошибка аутентификации пользователя в системе.
      */
-    List<MessageDTO> getMessagesBetweenUsers(Long interlocutor);
+    List<MessageDTO> getMessagesBetweenUsers(Long interlocutorId) throws UserNotFoundException, AuthException;
 
     /**
      * Позволяет получить список собеседников пользователя.
-     * @param userDTO DTO пользователя.
      * @return список DTO объектов содержащих данные на собеседников.
      */
-    List<UserDTO> getConversationsForUser(UserDTO userDTO);
+    List<UserDTO> getConversationsForUser();
 }
