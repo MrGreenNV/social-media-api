@@ -2,6 +2,7 @@ package ru.averkiev.socialmediaapi.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.averkiev.socialmediaapi.exceptions.AuthException;
 import ru.averkiev.socialmediaapi.exceptions.ImageNotFoundException;
@@ -231,7 +232,7 @@ public class PostServiceImpl implements PostService {
      * @throws AuthException выбрасывает, если произошла ошибка при получении данных из аутентификации пользователя.
      */
     @Override
-    public List<Post> showAllPostsByUser() throws AuthException {
+    public List<Post> showAllPostsByUser(PageRequest pageRequest) throws AuthException {
         Long userId;
         try {
             userId = authService.getUserIdFromAuthentication();
@@ -240,8 +241,29 @@ public class PostServiceImpl implements PostService {
             throw new AuthException("Ошибка при получении данных об аутентифицированном пользователе");
         }
 
-        List<Post> posts = postRepository.findAllByUserId(userId);
+        List<Post> posts = postRepository.findAllByUserId(userId, pageRequest);
         log.info("IN showAllPostsByUser - список постов для пользователя с идентификатором: {} успешно получен", userId);
         return posts;
+    }
+
+    /**
+     * Позволяет получить список всех постов отсортированных по дате создания.
+     * @param pageRequest пагинация запроса.
+     * @return список объектов Post.
+     */
+    @Override
+    public List<Post> getAllPostByCreateAt(PageRequest pageRequest) {
+        return postRepository.findAllByOrderByCreatedAtDesc(pageRequest);
+    }
+
+    /**
+     * Позволяет получить список постов по идентификаторам их создателей сортируя по дате.
+     * @param userIds список идентификаторов создателей постов.
+     * @param pageRequest пагинация запроса.
+     * @return список объектов Post.
+     */
+    @Override
+    public List<Post> getPostByUserIds(List<Long> userIds, PageRequest pageRequest) {
+        return postRepository.findByUserIdInOrderByCreatedAtDesc(userIds, pageRequest);
     }
 }

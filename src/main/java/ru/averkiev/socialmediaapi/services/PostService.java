@@ -1,5 +1,6 @@
 package ru.averkiev.socialmediaapi.services;
 
+import org.springframework.data.domain.PageRequest;
 import ru.averkiev.socialmediaapi.exceptions.AuthException;
 import ru.averkiev.socialmediaapi.exceptions.ImageNotFoundException;
 import ru.averkiev.socialmediaapi.exceptions.PostCreationException;
@@ -59,8 +60,24 @@ public interface PostService {
 
     /**
      * Позволяет посмотреть все посты пользователя.
+     * @param pageRequest пагинация запроса.
      * @return список постов.
      * @throws AuthException выбрасывает, если произошла ошибка при получении данных из аутентификации пользователя.
      */
-    List<Post> showAllPostsByUser();
+    List<Post> showAllPostsByUser(PageRequest pageRequest);
+
+    /**
+     * Позволяет получить список всех постов отсортированных по дате создания.
+     * @param pageRequest пагинация запроса.
+     * @return список объектов Post.
+     */
+    List<Post> getAllPostByCreateAt(PageRequest pageRequest);
+
+    /**
+     * Позволяет получить список постов по идентификаторам их создателей сортируя по дате.
+     * @param userIds список идентификаторов создателей постов.
+     * @param pageRequest пагинация запроса.
+     * @return список объектов Post.
+     */
+    List<Post> getPostByUserIds(List<Long> userIds, PageRequest pageRequest);
 }
