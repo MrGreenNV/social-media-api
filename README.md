@@ -29,7 +29,7 @@ mvn spring-boot:run
 ```
 
 ## Использование
-- API документация доступна по адресу: http://localhost:8080/swagger-ui.html
+- API документация доступна по адресу: http://localhost:8080/swagger-ui/index.html
 - Документация проекта доступна по адресу: https://mrgreennv.github.io/social-media-api/
 
 ## Функциональность
