@@ -1,0 +1,644 @@
+{
+  "info": {
+    "_postman_id": "087c36e9-223c-4f68-8a43-b34cbc0c0010",
+    "name": "social-media-api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "23334541"
+  },
+  "item": [
+    {
+      "name": "UserController",
+      "item": [
+        {
+          "name": "registration",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"testname\",\n    \"password\": \"test_pass\",\n    \"email\": \"test@gmail.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/social-media-api/users/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "social-media-api",
+                "users",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "AuthController",
+      "item": [
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"testname\",\n    \"password\": \"test_pass\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/social-media-api/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "social-media-api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "PostController",
+      "item": [
+        {
+          "name": "create post",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0bmFtZSIsImV4cCI6MTY5MjYyMDA1NiwiaWF0IjoxNjkyNjE5NzU2fQ.uR1A8g6N0blnxkhEVRqQufQg5JL3_DbwE7-p2CkthDI5rBKwh1z2WC50CtH9kLQ1pWdaII8aDEo3RAQMD0Q4Iw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Заголовок\",\n    \"text\": \"Какой-то текст\",\n    \"userId\": 4\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/social-media-api/posts",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "social-media-api",
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update post",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0bmFtZTEiLCJleHAiOjE2OTI2NDExMDksImlhdCI6MTY5MjY0MDgwOX0.IhuYjPltPZG77tPGEs7n5Ukr9TfWhqQWRc_nRBcHvHBTCkAYieUEE2dFjqkQS_FBWTnQsiTZ3Fm3lmx1Qios4Q",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Обновленный заголовок\",\n    \"text\": \"Какой-то обновленный текст\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/social-media-api/posts/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "social-media-api",
+                "posts",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete post",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0bmFtZTEiLCJleHAiOjE2OTI2NDEyMTksImlhdCI6MTY5MjY0MDkxOX0.tdSTPw6AxitbLN8PDVJz4dyIgV_ByBfFdaYq4FIEt4DtPMpnAXIj2IE2xoi30BtvUa9RLOdCaUZAagG9yiKmNg",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/social-media-api/posts/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "social-media-api",
+                "posts",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get all posts by user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0bmFtZTEiLCJleHAiOjE2OTI4MTcyODEsImlhdCI6MTY5MjgxNjk4MX0.lEL0lyEddnF0OXCNUuBhsviRKSovL2kQce6g4a3DTU2oFYZzwkh81UY8rH5sImWSBOmfa9FAX3MH13jwjdfFSw",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/social-media-api/posts",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "social-media-api",
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "FriendshipRequestController",
+      "item": [
+        {
+          "name": "get pending friendship request",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0bmFtZTEiLCJleHAiOjE2OTI4MjQxMzIsImlhdCI6MTY5MjgyMzgzMn0.des9GEcDLbtqBc4agarXVJKqLl0biSJSkz71l4wNoT0QJSlFAHkKnxizeNAtxAvch6eW1PpMY-_N7RaJFF5hqA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/social-media-api/friendship-requests/pending",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "social-media-api",
+                "friendship-requests",
+                "pending"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "send friend request",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0bmFtZTEiLCJleHAiOjE2OTI4MjQxMzIsImlhdCI6MTY5MjgyMzgzMn0.des9GEcDLbtqBc4agarXVJKqLl0biSJSkz71l4wNoT0QJSlFAHkKnxizeNAtxAvch6eW1PpMY-_N7RaJFF5hqA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"fromUserId\": \"5\",\n    \"toUserId\": \"6\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/social-media-api/friendship-requests/send",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "social-media-api",
+                "friendship-requests",
+                "send"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "accept friend request",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0bmFtZSIsImV4cCI6MTY5Mjg5MjE3MSwiaWF0IjoxNjkyODkxODcxfQ.3zS1IYZm613Hlej_9BVK96na1aEN2h4OmZ983TppXL6hwMUTPIGtDuQao6PGiW3-KwLY0jdsMXjRplS8khkm0w",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"fromUserId\": \"4\",\n    \"toUserId\": \"5\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/social-media-api/friendship-requests/accept",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "social-media-api",
+                "friendship-requests",
+                "accept"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "decline friend request",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0bmFtZTEiLCJleHAiOjE2OTI4MjQxMzIsImlhdCI6MTY5MjgyMzgzMn0.des9GEcDLbtqBc4agarXVJKqLl0biSJSkz71l4wNoT0QJSlFAHkKnxizeNAtxAvch6eW1PpMY-_N7RaJFF5hqA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"fromUserId\": \"5\",\n    \"toUserId\": \"6\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/social-media-api/friendship-requests/decline",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "social-media-api",
+                "friendship-requests",
+                "decline"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete friendship",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0bmFtZTEiLCJleHAiOjE2OTI4MjUwNTQsImlhdCI6MTY5MjgyNDc1NH0.ANVH97qat_31-fZcCXLKa-k8EJy6Doe-X3JCvekteJFw9UsudXrUiUn2_gCXhM02TpMivI6XYxid7C9AWZ4A6A",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"fromUserId\": \"5\",\n    \"toUserId\": \"6\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/social-media-api/friendship-requests/delete",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "social-media-api",
+                "friendship-requests",
+                "delete"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "MessageController",
+      "item": [
+        {
+          "name": "get conversations",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0bmFtZTEiLCJleHAiOjE2OTI4OTI0NzcsImlhdCI6MTY5Mjg5MjE3N30.ysbVIAsJaJx4cwx9mza5jwCsT68HbLccTSG5tEb_m3nVuDHrH5bJo59pksZVOgsUi91qkXVcyl1diunKJ63uOQ",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/social-media-api/messages/conversations",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "social-media-api",
+                "messages",
+                "conversations"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get messages for user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0bmFtZTEiLCJleHAiOjE2OTI4OTQyOTEsImlhdCI6MTY5Mjg5Mzk5MX0.3qgRLUZzm-5acc4zqt-Sg5DuqTklAdEyZY__rpEk00n4gFL1FSBno31_A1vWyL7yHDhCNVDX2u-mlTNeXpvCTQ",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/social-media-api/messages/conversations/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "social-media-api",
+                "messages",
+                "conversations",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create message",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0bmFtZTEiLCJleHAiOjE2OTI4OTI0NzcsImlhdCI6MTY5Mjg5MjE3N30.ysbVIAsJaJx4cwx9mza5jwCsT68HbLccTSG5tEb_m3nVuDHrH5bJo59pksZVOgsUi91qkXVcyl1diunKJ63uOQ",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"senderId\": \"5\",\n    \"receiverId\": \"4\",\n    \"content\": \"Ответ на сообщение\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/social-media-api/messages",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "social-media-api",
+                "messages"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "edit message",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0bmFtZTEiLCJleHAiOjE2OTI4OTU0MzYsImlhdCI6MTY5Mjg5NTEzNn0.5izSan5azxpDFkAdn7Qc3TD26IHQD8inh86sz9oYOKs2WIAdhaKLag2Y__claG1nQG11rKL6hwVFAPmk9BJvng",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"content\": \"Новый ответ\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/social-media-api/messages/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "social-media-api",
+                "messages",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete message",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0bmFtZTEiLCJleHAiOjE2OTI4OTU0MzYsImlhdCI6MTY5Mjg5NTEzNn0.5izSan5azxpDFkAdn7Qc3TD26IHQD8inh86sz9oYOKs2WIAdhaKLag2Y__claG1nQG11rKL6hwVFAPmk9BJvng",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/social-media-api/messages/2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "social-media-api",
+                "messages",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ActivityFeedController",
+      "item": [
+        {
+          "name": "get activity feed for user",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0bmFtZSIsImV4cCI6MTY5Mjk2ODQwOSwiaWF0IjoxNjkyOTY4MTA5fQ.3HmSb0c0UUwH4hLK3kfYgjz2SFiLzwgxAjaPWuU0xjCiHl5dqlD45nVhZf80Ri4GIRvk4pOFcU5AkLAiIX8E9Q",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/social-media-api/activity?page=1&pageSize=10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "social-media-api",
+                "activity"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
