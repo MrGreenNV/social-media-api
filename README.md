@@ -23,7 +23,11 @@ mvn clean install
 ```
 
 3. Создайте базу данных PostgreSQL и настройте соответствующие параметры подключения в файле application.properties.
-4. Запустите приложение:
+4. Создайте таблицы, используя файл в директории:
+```shell
+/SocialMediaAPI/src/main/resources/db/V1_Create_Tables.sql
+```
+5. Запустите приложение:
 ```shell
 mvn spring-boot:run
 ```
