@@ -16,7 +16,7 @@ public interface FriendshipRequestService {
      * Позволяет пользователю отправить запрос с предложением дружбы.
      * @param fromUser отправитель запроса.
      * @param toUser получатель запроса.
-     * @throws FriendshipRequestCreateException, выбрасывает, если возникла ошибка при создании заявки.
+     * @throws FriendshipRequestCreateException выбрасывает, если возникла ошибка при создании заявки.
      */
     void sendFriendRequest(User fromUser, User toUser) throws FriendshipRequestCreateException;
 

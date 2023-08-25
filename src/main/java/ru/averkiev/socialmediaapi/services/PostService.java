@@ -35,6 +35,7 @@ public interface PostService {
 
     /**
      * Позволяет открепить изображение от поста.
+     * @param postId идентификатор поста.
      * @param imageId идентификатор изображения.
      * @throws PostNotFoundException выбрасывает, если пост не найден в базе данных.
      * @throws AuthException выбрасывает, если недостаточно прав.

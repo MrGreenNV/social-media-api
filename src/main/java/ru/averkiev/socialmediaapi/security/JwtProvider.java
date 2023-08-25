@@ -18,6 +18,7 @@ import java.time.ZoneId;
 import java.util.Date;
 
 /**
+ * Класс предоставляет функциональность для создания, проверки и валидации JWT токенов.
  * @author mrGreenNV
  */
 @Slf4j

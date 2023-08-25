@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import ru.averkiev.socialmediaapi.security.JwtFilter;
 
 /**
+ * Настройка конфигурации Spring Security.
  * @author mrGreenNV
  */
 @Configuration

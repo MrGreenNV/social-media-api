@@ -12,6 +12,11 @@ import java.util.Optional;
  */
 @Repository
 public interface AccessTokenRepository extends JpaRepository<AccessToken, Long> {
+    /**
+     * Выполняет поиск access токена в базе данных по идентификатору пользователя.
+     * @param userId идентификатор пользователя.
+     * @return Optional, содержащий access токен, если он был найден или пустой.
+     */
     Optional<AccessToken> findByUserId(long userId);
 
 }

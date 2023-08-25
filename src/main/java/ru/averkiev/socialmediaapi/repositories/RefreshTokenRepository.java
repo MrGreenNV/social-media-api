@@ -12,5 +12,10 @@ import java.util.Optional;
  */
 @Repository
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
+    /**
+     * Выполняет поиск refresh токена в базе данных по идентификатору пользователя.
+     * @param userId идентификатор пользователя.
+     * @return Optional, содержащий refresh токен, если он был найден или пустой.
+     */
     Optional<RefreshToken> findByUserId(long userId);
 }

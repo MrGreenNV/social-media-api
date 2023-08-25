@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- *
+ * Сущность изображения для поста
  * @author mrGreenNV
  */
 @Entity
