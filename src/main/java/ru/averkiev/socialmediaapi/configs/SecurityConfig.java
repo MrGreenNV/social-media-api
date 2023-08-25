@@ -26,7 +26,7 @@ public class SecurityConfig {
 
     /**
      * Позволяет выполнять фильтрацию endpoints, для ограничения аутентификации.
-     * @param httpSecurity настройка фильтрации запроса.
+     * @param httpSecurity Объект HttpSecurity для настройки безопасности.
      * @return HttpSecurity с назначенными изменениями.
      * @throws Exception выбрасывает, если при внесении изменений были допущены ошибки.
      */
@@ -36,7 +36,13 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/social-media-api/users/register", "/social-media-api/auth/login", "/swagger-ui/index.html#/", "/swagger-ui/**").permitAll()
+                        .requestMatchers(
+                                "/social-media-api/users/register",
+                                "/social-media-api/auth/login",
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class);
