@@ -1,0 +1,11 @@
+ru.averkiev.socialmediaapi
+ru.averkiev.socialmediaapi.configs
+ru.averkiev.socialmediaapi.controllers
+ru.averkiev.socialmediaapi.exceptions
+ru.averkiev.socialmediaapi.models
+ru.averkiev.socialmediaapi.repositories
+ru.averkiev.socialmediaapi.security
+ru.averkiev.socialmediaapi.services
+ru.averkiev.socialmediaapi.services.impl
+ru.averkiev.socialmediaapi.utils
+ru.averkiev.socialmediaapi.validations
