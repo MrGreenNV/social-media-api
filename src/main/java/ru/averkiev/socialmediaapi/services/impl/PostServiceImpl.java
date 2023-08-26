@@ -227,7 +227,8 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * Позволяет посмотреть все посты пользователя.
+     * Позволяет посмотреть все посты пользователя с пагинацией страниц.
+     * @param pageRequest пагинация.
      * @return список постов.
      * @throws AuthException выбрасывает, если произошла ошибка при получении данных из аутентификации пользователя.
      */
@@ -242,6 +243,26 @@ public class PostServiceImpl implements PostService {
         }
 
         List<Post> posts = postRepository.findAllByUserId(userId, pageRequest);
+        log.info("IN showAllPostsByUser - список постов для пользователя с идентификатором: {} успешно получен", userId);
+        return posts;
+    }
+
+    /**
+     * Позволяет посмотреть все посты пользователя.
+     * @return список постов.
+     * @throws AuthException выбрасывает, если произошла ошибка при получении данных из аутентификации пользователя.
+     */
+    @Override
+    public List<Post> showAllPostsByUser() throws AuthException {
+        Long userId;
+        try {
+            userId = authService.getUserIdFromAuthentication();
+        } catch (Exception ex) {
+            log.error("IN showAllPostsByUser - список постов получить не удалось");
+            throw new AuthException("Ошибка при получении данных об аутентифицированном пользователе");
+        }
+
+        List<Post> posts = postRepository.findAllByUserId(userId);
         log.info("IN showAllPostsByUser - список постов для пользователя с идентификатором: {} успешно получен", userId);
         return posts;
     }

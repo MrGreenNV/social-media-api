@@ -45,8 +45,8 @@ public class ActivityFeedController {
             summary = "Отображает ленту активности для пользователя",
             description = "Позволяет вывести список постов в соответствии с подписками пользователя"
     )
-    public ResponseEntity<List<PostDTO>> getActivityFeedForUser(@RequestParam(value = "page", required = false) int page,
-                                                                @RequestParam(value = "pageSize", required = false) int pageSize) {
+    public ResponseEntity<List<PostDTO>> getActivityFeedForUser(@RequestParam(value = "page", required = false) Integer page,
+                                                                @RequestParam(value = "pageSize", required = false) Integer pageSize) {
         return ResponseEntity.status(HttpStatus.OK).body(activityFeedService.getActivityFeedForUser(page, pageSize));
     }
 }

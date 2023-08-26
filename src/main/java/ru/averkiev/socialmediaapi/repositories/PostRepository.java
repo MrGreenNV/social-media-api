@@ -15,12 +15,19 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     /**
-     * Выполняет поиск всех постов для пользователя с указанным идентификатором.
+     * Выполняет поиск всех постов для пользователя с указанным идентификатором с пагинацией.
      * @param userId идентификатор пользователя.
      * @param pageRequest пагинация запроса.
      * @return список объектов Post.
      */
     List<Post> findAllByUserId(Long userId, PageRequest pageRequest);
+
+    /**
+     * Выполняет поиск всех постов для пользователя с указанным идентификатором.
+     * @param userId идентификатор пользователя.
+     * @return список объектов Post.
+     */
+    List<Post> findAllByUserId(Long userId);
 
     /**
      * Выполняет поиск всех постов из базы данных сортируя по дате создания.

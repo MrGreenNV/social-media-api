@@ -60,12 +60,19 @@ public interface PostService {
     void deletePost(Long postId) throws PostNotFoundException, AuthException;
 
     /**
-     * Позволяет посмотреть все посты пользователя.
+     * Позволяет посмотреть все посты пользователя с пагинацией страниц.
      * @param pageRequest пагинация запроса.
      * @return список постов.
      * @throws AuthException выбрасывает, если произошла ошибка при получении данных из аутентификации пользователя.
      */
     List<Post> showAllPostsByUser(PageRequest pageRequest);
+
+    /**
+     * Позволяет посмотреть все посты пользователя.
+     * @return список постов.
+     * @throws AuthException выбрасывает, если произошла ошибка при получении данных из аутентификации пользователя.
+     */
+    List<Post> showAllPostsByUser();
 
     /**
      * Позволяет получить список всех постов отсортированных по дате создания.

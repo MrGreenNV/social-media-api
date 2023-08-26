@@ -123,9 +123,13 @@ public class PostController {
     @SecurityRequirement(name = "JWT")
     @Operation(
             summary = "Получение списка постов пользователя",
-            description = "Позволяет получить список постов текущего пользователя"
+            description = "Позволяет получить список постов текущего пользователя с возможностью пагинации"
     )
-    public ResponseEntity<List<Post>> getAllPostsByUser(@RequestParam int page, @RequestParam int pageSize) {
+    public ResponseEntity<List<Post>> getAllPostsByUser(@RequestParam(required = false) Integer page,
+                                                        @RequestParam(required = false) Integer pageSize) {
+        if (page == null || pageSize == null) {
+            return ResponseEntity.status(HttpStatus.OK).body(postService.showAllPostsByUser());
+        }
         return ResponseEntity.status(HttpStatus.OK).body(postService.showAllPostsByUser(PageRequest.of(page, pageSize)));
     }
 
@@ -139,9 +143,10 @@ public class PostController {
     @SecurityRequirement(name = "JWT")
     @Operation(
             summary = "Получения списка всех постов",
-            description = "Позволяет получить список всех постов отсортированных по дате создания"
+            description = "Позволяет получить список всех постов отсортированных по дате создания с возможностью пагинации"
     )
-    public ResponseEntity<?> getAllPosts(@RequestParam int page, int pageSize) {
+    public ResponseEntity<?> getAllPosts(@RequestParam(required = false) Integer page,
+                                         @RequestParam(required = false) Integer pageSize) {
         return ResponseEntity.status(HttpStatus.OK).body(postService.getAllPostByCreateAt(PageRequest.of(page, pageSize)));
     }
 }
