@@ -25,16 +25,16 @@ public abstract class BaseEntity {
     private Long id;
 
     /** Время создания сущности. */
-    @Column(name = "create_at")
+    @Column(name = "created_at")
     @CreationTimestamp
     @Schema(description = "Дата и время создания")
     private Date createdAt;
 
     /** Время обновления сущности. */
-    @Column(name = "update_at")
+    @Column(name = "updated_at")
     @UpdateTimestamp
     @Schema(description = "Дата и время обновления")
-    private Date updateAt;
+    private Date updatedAt;
 
     /** Статус сущности в системе. */
     @Enumerated(EnumType.STRING)
