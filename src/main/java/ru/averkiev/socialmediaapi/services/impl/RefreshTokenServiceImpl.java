@@ -43,6 +43,8 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         try {
             RefreshToken currentRefreshToken = findByUserId(userId);
             currentRefreshToken.setRefreshToken(updateRefreshToken.getRefreshToken());
+            currentRefreshToken.setCreatedAt(updateRefreshToken.getCreatedAt());
+            currentRefreshToken.setExpiresAt(updateRefreshToken.getExpiresAt());
             log.info("IN updateByUserId - refresh токен для пользователя с идентификатором: {} успешно обновлен", userId);
             return refreshTokenRepository.save(currentRefreshToken);
         } catch (TokenNotFoundException tnfEx) {

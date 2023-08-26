@@ -43,6 +43,8 @@ public class AccessTokenServiceImpl implements AccessTokenService {
         try {
             AccessToken currentAccessToken = findByUserId(userId);
             currentAccessToken.setAccessToken(updateAccessToken.getAccessToken());
+            currentAccessToken.setCreatedAt(updateAccessToken.getCreatedAt());
+            currentAccessToken.setExpiresAt(updateAccessToken.getExpiresAt());
             log.info("IN updateByUserId - access токен для пользователя с идентификатором: {} успешно обновлен", userId);
             return accessTokenRepository.save(currentAccessToken);
         } catch (TokenNotFoundException tnfEx) {

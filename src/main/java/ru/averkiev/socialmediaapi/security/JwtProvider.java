@@ -191,7 +191,7 @@ public class JwtProvider {
         final Date currentDate = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
 
         // Если разница текущего времени со временем окончания токена больше половины срока действия токена.
-        return (currentAccessExpiration.getTime() - currentDate.getTime()) <= (expirationAccessTokenInMinutes * 60 * 500);
+        return (currentAccessExpiration.getTime() - currentDate.getTime()) <= (0.5 * expirationAccessTokenInMinutes * 60 * 1000);
     }
 
     /**
@@ -209,7 +209,7 @@ public class JwtProvider {
         final Date currentDate = Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant());
 
         // Если разница текущего времени со временем окончания токена больше половины срока действия токена.
-        return (currentRefreshExpiration.getTime() - currentDate.getTime()) <= (expirationRefreshTokenInDays * 24 * 60 * 60 * 500);
+        return (currentRefreshExpiration.getTime() - currentDate.getTime()) <= (0.5 * expirationRefreshTokenInDays * 24 * 60 * 60 * 1000);
     }
 
 }
