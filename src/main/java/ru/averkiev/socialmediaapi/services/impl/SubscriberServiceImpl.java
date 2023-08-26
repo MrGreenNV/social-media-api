@@ -12,7 +12,7 @@ import ru.averkiev.socialmediaapi.services.SubscriberService;
 import java.util.List;
 
 /**
- * Класс реализует функциональность для подписок пользователей.
+ * Класс реализует функциональность для подписчиков пользователей.
  * @author mrGreenNV
  */
 @Service
@@ -24,76 +24,76 @@ public class SubscriberServiceImpl implements SubscriberService {
     private final SubscriberRepository subscriberRepository;
 
     /**
-     * Позволяет создать подписку пользователя.
+     * Позволяет создать подписчика пользователя.
      * @param user пользователь.
-     * @param subscribedUser пользователь, на которого осуществляется подписка.
-     * @return объект Subscriber, содержащий данный о подписке.
+     * @param follower пользователь, который осуществляет подписку.
+     * @return объект Subscriber, содержащий данный о подписчике.
      */
     @Override
-    public Subscriber save(User user, User subscribedUser) {
-        Subscriber subscriber = new Subscriber(user, subscribedUser);
+    public Subscriber save(User user, User follower) {
+        Subscriber subscriber = new Subscriber(user, follower);
         subscriber = subscriberRepository.save(subscriber);
-        log.info("IN save - подписка пользователя: {} на пользователя: {} успешно сохранена", user.getUsername(), subscribedUser.getUsername());
+        log.info("IN save - подписчик: {} на пользователя: {} успешно создан", follower.getUsername(), user.getUsername());
         return subscriber;
     }
 
     /**
-     * Позволяет выполнить поиск подписки.
+     * Позволяет выполнить поиск подписчика.
      * @param user пользователь.
-     * @param subscribedUser подписка пользователя.
-     * @return объект Subscriber, содержащий данный о подписке.
-     * @throws SubscriberNotFoundException выбрасывает, если подписка не найдена.
+     * @param follower подписчик пользователя.
+     * @return объект Subscriber, содержащий данный о подписчике.
+     * @throws SubscriberNotFoundException выбрасывает, если подписчик не найден.
      */
     @Override
-    public Subscriber findByUserAndSubscribedUser(User user, User subscribedUser) throws SubscriberNotFoundException {
-        Subscriber subscriber = subscriberRepository.findSubscriberByUserAndSubscribedUser(user, subscribedUser).orElse(null);
+    public Subscriber findByUserAndSubscribedUser(User user, User follower) throws SubscriberNotFoundException {
+        Subscriber subscriber = subscriberRepository.findSubscriberByUserAndFollower(user, follower).orElse(null);
         if (subscriber == null) {
-            log.error("IN findByUserAndSubscribedUser - подписка пользователя: {} на пользователя: {} не найдена", user.getUsername(), subscribedUser.getUsername());
-            throw new SubscriberNotFoundException("Подписка на пользователя: " + user.getUsername() + " не найдена");
+            log.error("IN findByUserAndSubscribedUser - подписчик: {} на пользователя: {} успешно создан", follower.getUsername(), user.getUsername());
+            throw new SubscriberNotFoundException("Подписчик: " + follower.getUsername() + " пользователя: " + user.getUsername() + " не найден");
         }
-        log.info("IN findByUserAndSubscribedUser - подписка пользователя: {} на пользователя: {} успешно найдена", user.getUsername(), subscribedUser.getUsername() );
+        log.info("IN findByUserAndSubscribedUser - подписчик: {} на пользователя: {} успешно создан", follower.getUsername(), user.getUsername());
         return subscriber;
     }
 
     /**
-     * Позволяет получить список всех подписок конкретного пользователя.
+     * Позволяет получить список всех подписчиков на конкретного пользователя.
      * @param user пользователь.
-     * @return список объектов Subscriber, содержащих информацию о подписках.
+     * @return список объектов Subscriber, содержащих информацию о подписчиках.
      */
     @Override
     public List<Subscriber> findAllByUser(User user) {
         List<Subscriber> subscribers = subscriberRepository.findAll();
-        log.info("IN findAllByUser - список подписок пользователя: {} успешно получен", user.getUsername());
+        log.info("IN findAllByUser - список подписчиков пользователя: {} успешно получен", user.getUsername());
         return subscribers;
     }
 
     /**
-     * Позволяет удалить подписку.
-     * @param subscriber удаляемая подписка.
-     * @throws SubscriberNotFoundException выбрасывает, если подписка не найдена.
+     * Позволяет удалить подписчика.
+     * @param subscriber удаляемый подписчик.
+     * @throws SubscriberNotFoundException выбрасывает, если подписчик не найден.
      */
     @Override
     public void delete(Subscriber subscriber) throws SubscriberNotFoundException {
 
         if (!subscriberRepository.existsById(subscriber.getId())) {
-            log.error("IN delete - подписка на пользователя: {} не удалена", subscriber.getSubscribedUser().getUsername());
-            throw new SubscriberNotFoundException("Подписка на пользователя: " + subscriber.getSubscribedUser().getUsername() + " не найдена");
+            log.error("IN delete - подписчик: {} пользователя: {} не удален", subscriber.getFollower().getUsername(), subscriber.getUser().getUsername());
+            throw new SubscriberNotFoundException("Подписчик: " + subscriber.getFollower().getUsername() + " пользователя: " + subscriber.getUser().getUsername() + " не найден");
         }
 
         subscriberRepository.delete(subscriber);
-        log.info("IN delete - подписка на пользователя: {} успешно удалена", subscriber.getSubscribedUser().getUsername());
+        log.info("IN delete - подписчик: {} пользователя: {} успешно удалена", subscriber.getFollower().getUsername(), subscriber.getUser().getUsername());
 
     }
 
     /**
-     * Позволяет удалить подписку.
+     * Позволяет удалить подписчика.
      * @param user пользователь.
-     * @param subscribedUser подписка пользователя.
-     * @throws SubscriberNotFoundException выбрасывает, если подписка не найдена.
+     * @param follower подписка пользователя.
+     * @throws SubscriberNotFoundException выбрасывает, если подписчик не найден.
      */
     @Override
-    public void deleteByUserAndSubscribedUser(User user, User subscribedUser) throws SubscriberNotFoundException {
-        Subscriber subscriber = findByUserAndSubscribedUser(user, subscribedUser);
+    public void deleteByUserAndSubscribedUser(User user, User follower) throws SubscriberNotFoundException {
+        Subscriber subscriber = findByUserAndSubscribedUser(user, follower);
         delete(subscriber);
     }
 }

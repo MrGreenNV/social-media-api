@@ -21,13 +21,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Subscriber extends BaseEntity {
 
-    /** Пользователь, являющийся подписчиком. */
+    /** Пользователь, на которого осуществлена подписка. */
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    /** Пользователь, на которого осуществлена подписка. */
+    /** Пользователь, являющийся подписчиком. */
     @ManyToOne
     @JoinColumn(name = "follower_user_id")
-    private User subscribedUser;
+    private User follower;
 }

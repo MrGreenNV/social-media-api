@@ -13,42 +13,42 @@ import java.util.List;
 public interface SubscriberService {
 
     /**
-     * Позволяет создать подписку пользователя.
+     * Позволяет создать подписчика пользователя.
      * @param user пользователь.
-     * @param subscribedUser пользователь, на которого осуществляется подписка.
-     * @return объект Subscriber, содержащий данный о подписке.
+     * @param follower пользователь, который осуществляет подписку.
+     * @return объект Subscriber, содержащий данный о подписчике.
      */
-    Subscriber save(User user, User subscribedUser);
+    Subscriber save(User user, User follower);
 
     /**
-     * Позволяет выполнить поиск подписки.
+     * Позволяет выполнить поиск подписчика.
      * @param user пользователь.
-     * @param subscribedUser подписка пользователя.
-     * @return объект Subscriber, содержащий данный о подписке.
-     * @throws SubscriberNotFoundException выбрасывает, если подписка не найдена.
+     * @param follower подписчик пользователя.
+     * @return объект Subscriber, содержащий данный о подписчике.
+     * @throws SubscriberNotFoundException выбрасывает, если подписчик не найден.
      */
-    Subscriber findByUserAndSubscribedUser(User user, User subscribedUser) throws SubscriberNotFoundException;
+    Subscriber findByUserAndSubscribedUser(User user, User follower) throws SubscriberNotFoundException;
 
     /**
-     * Позволяет получить список всех подписок конкретного пользователя.
+     * Позволяет получить список всех подписчиков на конкретного пользователя.
      * @param user пользователь.
-     * @return список объектов Subscriber, содержащих информацию о подписках.
+     * @return список объектов Subscriber, содержащих информацию о подписчиках.
      */
     List<Subscriber> findAllByUser(User user);
 
     /**
-     * Позволяет удалить подписку.
-     * @param subscriber удаляемая подписка.
-     * @throws SubscriberNotFoundException выбрасывает, если подписка не найдена.
+     * Позволяет удалить подписчика.
+     * @param subscriber удаляемый подписчик.
+     * @throws SubscriberNotFoundException выбрасывает, если подписчик не найден.
      */
     void delete(Subscriber subscriber) throws SubscriberNotFoundException;
 
     /**
-     * Позволяет удалить подписку.
+     * Позволяет удалить подписчика.
      * @param user пользователь.
-     * @param subscribedUser подписка пользователя.
-     * @throws SubscriberNotFoundException выбрасывает, если подписка не найдена.
+     * @param follower подписка пользователя.
+     * @throws SubscriberNotFoundException выбрасывает, если подписчик не найден.
      */
-    void deleteByUserAndSubscribedUser(User user, User subscribedUser) throws SubscriberNotFoundException;
+    void deleteByUserAndSubscribedUser(User user, User follower) throws SubscriberNotFoundException;
 
 }

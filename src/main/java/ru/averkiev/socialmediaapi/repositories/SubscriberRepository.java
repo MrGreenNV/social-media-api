@@ -15,11 +15,11 @@ import java.util.Optional;
 public interface SubscriberRepository extends JpaRepository<Subscriber, Long> {
 
     /**
-     * Выполняет поиск подписки в базе данных.
+     * Выполняет поиск подписчика в базе данных.
      * @param user пользователь.
-     * @param subscribedUser подписка пользователя.
-     * @return Optional содержащий подписку, если она была найдена, иначе - пустой.
+     * @param follower подписчик пользователя.
+     * @return Optional содержащий подписчика, если она была найдена, иначе - пустой.
      */
-    Optional<Subscriber> findSubscriberByUserAndSubscribedUser(User user, User subscribedUser);
+    Optional<Subscriber> findSubscriberByUserAndFollower(User user, User follower);
 
 }
