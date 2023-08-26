@@ -88,10 +88,17 @@ public interface PostService {
     List<Post> getAllPostByCreateAt();
 
     /**
-     * Позволяет получить список постов по идентификаторам их создателей сортируя по дате.
+     * Позволяет получить список постов по идентификаторам их создателей сортируя по дате с пагинацией страниц.
      * @param userIds список идентификаторов создателей постов.
      * @param pageRequest пагинация запроса.
      * @return список объектов Post.
      */
     List<Post> getPostByUserIds(List<Long> userIds, PageRequest pageRequest);
+
+    /**
+     * Позволяет получить список постов по идентификаторам их создателей сортируя по дате.
+     * @param userIds список идентификаторов создателей постов.
+     * @return список объектов Post.
+     */
+    List<Post> getPostByUserIds(List<Long> userIds);
 }

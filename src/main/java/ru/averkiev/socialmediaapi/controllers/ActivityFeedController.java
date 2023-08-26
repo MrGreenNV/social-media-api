@@ -47,6 +47,9 @@ public class ActivityFeedController {
     )
     public ResponseEntity<List<PostDTO>> getActivityFeedForUser(@RequestParam(value = "page", required = false) Integer page,
                                                                 @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+        if (page == null || pageSize == null) {
+            return ResponseEntity.status(HttpStatus.OK).body(activityFeedService.getActivityFeedForUser());
+        }
         return ResponseEntity.status(HttpStatus.OK).body(activityFeedService.getActivityFeedForUser(page, pageSize));
     }
 }

@@ -287,7 +287,7 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * Позволяет получить список постов по идентификаторам их создателей сортируя по дате.
+     * Позволяет получить список постов по идентификаторам их создателей сортируя по дате с пагинацией страниц.
      * @param userIds список идентификаторов создателей постов.
      * @param pageRequest пагинация запроса.
      * @return список объектов Post.
@@ -295,5 +295,15 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getPostByUserIds(List<Long> userIds, PageRequest pageRequest) {
         return postRepository.findByUserIdInOrderByCreatedAtDesc(userIds, pageRequest);
+    }
+
+    /**
+     * Позволяет получить список постов по идентификаторам их создателей сортируя по дате.
+     * @param userIds список идентификаторов создателей постов.
+     * @return список объектов Post.
+     */
+    @Override
+    public List<Post> getPostByUserIds(List<Long> userIds) {
+        return postRepository.findByUserIdInOrderByCreatedAtDesc(userIds);
     }
 }
