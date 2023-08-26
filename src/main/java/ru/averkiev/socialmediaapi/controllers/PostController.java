@@ -147,6 +147,9 @@ public class PostController {
     )
     public ResponseEntity<?> getAllPosts(@RequestParam(required = false) Integer page,
                                          @RequestParam(required = false) Integer pageSize) {
+        if (page == null || pageSize == null) {
+            return ResponseEntity.status(HttpStatus.OK).body(postService.getAllPostByCreateAt());
+        }
         return ResponseEntity.status(HttpStatus.OK).body(postService.getAllPostByCreateAt(PageRequest.of(page, pageSize)));
     }
 }

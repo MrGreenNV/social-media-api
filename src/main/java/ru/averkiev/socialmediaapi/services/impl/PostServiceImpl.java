@@ -268,13 +268,22 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * Позволяет получить список всех постов отсортированных по дате создания.
+     * Позволяет получить список всех постов отсортированных по дате создания с пагинацией страниц.
      * @param pageRequest пагинация запроса.
      * @return список объектов Post.
      */
     @Override
     public List<Post> getAllPostByCreateAt(PageRequest pageRequest) {
         return postRepository.findAllByOrderByCreatedAtDesc(pageRequest);
+    }
+
+    /**
+     * Позволяет получить список всех постов отсортированных по дате создания.
+     * @return список объектов Post.
+     */
+    @Override
+    public List<Post> getAllPostByCreateAt() {
+        return postRepository.findAllByOrderByCreatedAtDesc();
     }
 
     /**

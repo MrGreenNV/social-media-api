@@ -30,11 +30,17 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByUserId(Long userId);
 
     /**
-     * Выполняет поиск всех постов из базы данных сортируя по дате создания.
+     * Выполняет поиск всех постов из базы данных сортируя по дате создания с пагинацией страниц.
      * @param pageRequest пагинация запроса.
      * @return список объектов Post.
      */
     List<Post> findAllByOrderByCreatedAtDesc(PageRequest pageRequest);
+
+    /**
+     * Выполняет поиск всех постов из базы данных сортируя по дате создания.
+     * @return список объектов Post.
+     */
+    List<Post> findAllByOrderByCreatedAtDesc();
 
     /**
      * Выполняет поиск постов по идентификаторам их создателей сортируя по дате.
