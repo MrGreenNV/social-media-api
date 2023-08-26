@@ -1,0 +1,418 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+
+    <!--    Создание таблицы пользователей. -->
+    <changeSet id="1.0.0" author="MrGreeNV">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(100)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(100)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(25)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--    Создание таблицы постов. -->
+    <changeSet id="1.0.1" author="MrGreenNV">
+        <createTable tableName="posts">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(25)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--    Создание внешнего ключа на пользователя в таблице постов. -->
+    <changeSet id="1.0.2" author="MrGreenNV">
+        <addForeignKeyConstraint baseTableName="posts"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_posts_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+
+        <!--    Создание таблицы access токенов. -->
+    <changeSet id="1.0.3" author="MrGreenNV">
+        <createTable tableName="access_tokens">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--    Создание внешнего ключа на пользователя в таблице access токенов. -->
+    <changeSet id="1.0.4" author="MrGreenNV">
+        <addForeignKeyConstraint baseTableName="access_tokens"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_access_tokens_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <!--    Создание таблицы refresh токенов. -->
+    <changeSet id="1.0.5" author="MrGreenNV">
+        <createTable tableName="refresh_tokens">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expires_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--    Создание внешнего ключа на пользователя в таблице refresh токенов. -->
+    <changeSet id="1.0.6" author="MrGreenNV">
+        <addForeignKeyConstraint baseTableName="refresh_tokens"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_refresh_tokens_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <!--    Создание таблицы изображений. -->
+    <changeSet id="1.0.7" author="MrGreenNV">
+        <createTable tableName="images">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="image_data" type="BYTEA">
+                <constraints nullable="false"/>
+            </column>
+            <column name="post_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(25)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--    Создание внешнего ключа на пост в таблице изображений. -->
+    <changeSet id="1.0.8" author="MrGreenNV">
+        <addForeignKeyConstraint baseTableName="images"
+                                 baseColumnNames="post_id"
+                                 constraintName="fk_images_post"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedTableName="posts"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <!--    Создание таблицы сообщений. -->
+    <changeSet id="1.0.9" author="MrGreenNV">
+        <createTable tableName="messages">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sender_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="receiver_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(25)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--    Создание внешнего ключа на пользователя - отправителя сообщения в таблице сообщений. -->
+    <changeSet id="1.0.10" author="MrGreenNV">
+        <addForeignKeyConstraint baseTableName="messages" baseColumnNames="sender_id"
+                                 constraintName="fk_messages_sender_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <!--    Создание внешнего ключа на пользователя - получателя сообщения в таблице сообщений. -->
+    <changeSet id="1.0.11" author="MrGreenNV">
+        <addForeignKeyConstraint baseTableName="messages" baseColumnNames="receiver_id"
+                                 constraintName="fk_messages_receiver_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <!--    Создание таблицы подписок пользователя. -->
+    <changeSet id="1.0.12" author="MrGreenNV">
+        <createTable tableName="subscriptions">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="target_user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(25)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--    Создание внешнего ключа для пользователя в таблице подписок. -->
+    <changeSet id="1.0.13" author="MrGreenNV">
+        <addForeignKeyConstraint baseTableName="subscriptions"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_subscriptions_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <!--    Создание внешнего ключа для пользователя, но которого происходит подписка в таблице подписок. -->
+    <changeSet id="1.0.14" author="MrGreenNV">
+        <addForeignKeyConstraint baseTableName="subscriptions"
+                                 baseColumnNames="target_user_id"
+                                 constraintName="fk_subscriptions_target_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <!--    Создание таблицы подписчиков пользователя. -->
+    <changeSet id="1.0.15" author="MrGreenNV">
+        <createTable tableName="subscribers">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="follower_user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(25)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--    Создание внешнего ключа для пользователя в таблице подписчиков. -->
+    <changeSet id="1.0.16" author="MrGreenNV">
+        <addForeignKeyConstraint baseTableName="subscribers"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_subscriptions_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <!--    Создание внешнего ключа для подписчика в таблице подписчиков. -->
+    <changeSet id="1.0.17" author="MrGreenNV">
+        <addForeignKeyConstraint baseTableName="subscribers"
+                                 baseColumnNames="follower_user_id"
+                                 constraintName="fk_subscriptions_follower_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <!--    Создание таблицы запросов на дружбу. -->
+    <changeSet id="1.0.18" author="MrGreenNV">
+        <createTable tableName="friendship_request">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="from_user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="to_user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="request_status" type="VARCHAR(25)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(25)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--    Создание внешнего ключа для пользователя отправляющего запрос на дружбу. -->
+    <changeSet id="1.0.19" author="MrGreenNV">
+        <addForeignKeyConstraint baseTableName="friendship_request"
+                                 baseColumnNames="from_user_id"
+                                 constraintName="fk_friendship_from_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <!--    Создание внешнего ключа для пользователя, которому предназначается запрос на дружбу. -->
+    <changeSet id="1.0.20" author="MrGreenNV">
+        <addForeignKeyConstraint baseTableName="friendship_request"
+                                 baseColumnNames="to_user_id"
+                                 constraintName="fk_friendship_to_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <!--    Создание таблицы дружеских связей. -->
+    <changeSet id="1.0.21" author="MrGreenNV">
+        <createTable tableName="user_friend">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="friend_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(25)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!--    Создание внешнего ключа для пользователя в таблице дружеских связей. -->
+    <changeSet id="1.0.22" author="MrGreenNV">
+        <addForeignKeyConstraint baseTableName="user_friend"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_user_friend_user"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+
+    <!--    Создание внешнего ключа для друга в таблице дружеских связей. -->
+    <changeSet id="1.0.23" author="MrGreenNV">
+        <addForeignKeyConstraint baseTableName="user_friend"
+                                 baseColumnNames="friend_id"
+                                 constraintName="fk_user_friend_friend"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+</databaseChangeLog>
