@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Описывает сущность последователя.
+ * Описывает сущность подписки.
  * @author mrGreenNV
  */
 @Entity
@@ -21,13 +21,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Subscription extends BaseEntity {
 
-    /** Пользователь, на которого осуществлена подписка. */
+    /** Пользователь, являющийся подписчиком. */
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    /** Пользователь, являющийся подписчиком. */
+    /** Пользователь, на которого осуществлена подписка. */
     @ManyToOne
     @JoinColumn(name = "target_user_id")
-    private User follower;
+    private User subscriptionUser;
 }

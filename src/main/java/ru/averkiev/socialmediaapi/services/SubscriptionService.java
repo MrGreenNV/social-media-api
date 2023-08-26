@@ -7,48 +7,48 @@ import ru.averkiev.socialmediaapi.models.User;
 import java.util.List;
 
 /**
- * Интерфейс определяет функциональность для подписчиков пользователей.
+ * Интерфейс определяет функциональность для подписок пользователей.
  * @author mrGreenNV
  */
 public interface SubscriptionService {
 
     /**
-     * Позволяет создать подписку на пользователя.
+     * Позволяет создать подписку пользователя.
      * @param user пользователь.
-     * @param follower подписчик пользователя.
-     * @return объект Subscription, содержащий данный о подписчике.
+     * @param subscriptionUser подписка пользователя.
+     * @return объект Subscription, содержащий данные о подписке.
      */
-    Subscription save(User user, User follower);
+    Subscription save(User user, User subscriptionUser);
 
     /**
-     * Позволяет выполнить поиск подписки на пользователя.
+     * Позволяет выполнить поиск подписки пользователя.
      * @param user пользователь.
-     * @param follower подписчик пользователя.
-     * @return объект Subscription, содержащий данный о подписчике.
-     * @throws SubscriptionNotFoundException выбрасывает, если подписчик не найден.
+     * @param subscriptionUser подписка пользователя.
+     * @return объект Subscription, содержащий данный о подписке.
+     * @throws SubscriptionNotFoundException выбрасывает, если подписка не найдена.
      */
-    Subscription findByUserAndSubscription(User user, User follower) throws SubscriptionNotFoundException;
+    Subscription findByUserAndSubscription(User user, User subscriptionUser) throws SubscriptionNotFoundException;
 
     /**
-     * Позволяет получить список всех подписок на конкретного пользователя.
+     * Позволяет получить список всех подписок конкретного пользователя.
      * @param user пользователь.
-     * @return список объектов Subscription, содержащих информацию о подписчиках.
+     * @return список объектов Subscription, содержащих информацию о подписках.
      */
     List<Subscription> findAllByUser(User user);
 
     /**
-     * Позволяет удалить подписку на пользователя.
-     * @param subscription удаляемая подписка на пользователя.
-     * @throws SubscriptionNotFoundException выбрасывает, если подписчик не найден.
+     * Позволяет удалить подписку пользователя.
+     * @param subscription удаляемая подписка пользователя.
+     * @throws SubscriptionNotFoundException выбрасывает, если подписка не найдена.
      */
     void delete(Subscription subscription) throws SubscriptionNotFoundException;
 
     /**
-     * Позволяет удалить подписку на пользователя.
+     * Позволяет удалить подписку пользователя.
      * @param user пользователь.
-     * @param follower подписчик пользователя.
-     * @throws SubscriptionNotFoundException выбрасывает, если подписчик не найден.
+     * @param subscriptionUser подписка пользователя.
+     * @throws SubscriptionNotFoundException выбрасывает, если подписка не найден.
      */
-    void deleteByUserAndSubscribedUser(User user, User follower) throws SubscriptionNotFoundException;
+    void deleteByUserAndSubscribedUser(User user, User subscriptionUser) throws SubscriptionNotFoundException;
 
 }
