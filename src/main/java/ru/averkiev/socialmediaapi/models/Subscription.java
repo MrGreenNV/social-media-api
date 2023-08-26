@@ -28,6 +28,6 @@ public class Subscription extends BaseEntity {
 
     /** Пользователь, являющийся подписчиком. */
     @ManyToOne
-    @JoinColumn(name = "follower_user_id")
+    @JoinColumn(name = "target_user_id")
     private User follower;
 }
