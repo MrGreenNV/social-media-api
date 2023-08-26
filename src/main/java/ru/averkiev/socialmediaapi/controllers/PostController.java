@@ -8,14 +8,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.averkiev.socialmediaapi.exceptions.AuthException;
-import ru.averkiev.socialmediaapi.exceptions.ImageNotFoundException;
-import ru.averkiev.socialmediaapi.exceptions.PostCreationException;
-import ru.averkiev.socialmediaapi.exceptions.PostNotFoundException;
 import ru.averkiev.socialmediaapi.models.Image;
 import ru.averkiev.socialmediaapi.models.Post;
 import ru.averkiev.socialmediaapi.services.impl.PostServiceImpl;
-import ru.averkiev.socialmediaapi.utils.ErrorResponse;
 
 import java.util.List;
 
@@ -40,7 +35,7 @@ public class PostController {
     /**
      * API-endpoint для создания нового поста.
      * @param post объект Post содержащий данные для создания поста
-     * @return объект Post если создание прошло успешно, иначе - ошибку.
+     * @return объект Post.
      */
     @PostMapping
     @SecurityRequirement(name = "JWT")
@@ -48,21 +43,15 @@ public class PostController {
             summary = "Создание нового поста",
             description = "Позволяет создать новый пост по данным полученным из тела запроса"
     )
-    public ResponseEntity<?> createPost(@RequestBody Post post) {
-        try {
-            return ResponseEntity.ok(postService.createPost(post));
-        } catch (PostCreationException pnfEx) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), pnfEx.getMessage()));
-        } catch (AuthException aEx) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), aEx.getMessage()));
-        }
+    public ResponseEntity<Post> createPost(@RequestBody Post post) {
+        return ResponseEntity.ok(postService.createPost(post));
     }
 
     /**
      * API-endpoint для обновления поста в базе данных.
      * @param postId идентификатор обновляемого поста.
      * @param updatePost объект Post, содержащий обновленные данные.
-     * @return объект Post с обновленными данными, если обновление прошло успешно, иначе - ошибку.
+     * @return объект Post с обновленными данными.
      */
     @PutMapping("/{postId}")
     @SecurityRequirement(name = "JWT")
@@ -70,20 +59,14 @@ public class PostController {
             summary = "Обновление существующего поста",
             description = "Позволяет обновить существующий пост в базе данных"
     )
-    public ResponseEntity<?> updatePost(@PathVariable Long postId, @RequestBody Post updatePost) {
-        try {
-            return ResponseEntity.ok(postService.updatePost(postId, updatePost));
-        } catch (PostNotFoundException pnfEx) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), pnfEx.getMessage()));
-        } catch (AuthException aEx) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), aEx.getMessage()));
-        }
+    public ResponseEntity<Post> updatePost(@PathVariable Long postId, @RequestBody Post updatePost) {
+        return ResponseEntity.ok(postService.updatePost(postId, updatePost));
     }
 
     /**
      * API-endpoint для удаления поста из базы данных.
      * @param postId идентификатор удаляемого поста.
-     * @return статус ответа или ошибку, если не удалось удалить пост.
+     * @return HTTP статус запроса.
      */
     @DeleteMapping("/{postId}")
     @SecurityRequirement(name = "JWT")
@@ -91,22 +74,16 @@ public class PostController {
             summary = "Удаление поста",
             description = "Позволяет удалить пост из базы данных, при этом удаляются связанные с ним изображения"
     )
-    public ResponseEntity<?> deletePost(@PathVariable Long postId) {
-        try {
-            postService.deletePost(postId);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (PostNotFoundException pnfEx) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), pnfEx.getMessage()));
-        } catch (AuthException aEx) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), aEx.getMessage()));
-        }
+    public ResponseEntity<HttpStatus> deletePost(@PathVariable Long postId) {
+        postService.deletePost(postId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     /**
      * API-endpoint для прикрепления изображения к посту.
      * @param postId идентификатор поста, к которому прикрепляется изображение.
      * @param image прикрепляемое изображение.
-     * @return статус ответа или ошибку, если не удалось прикрепить изображение.
+     * @return HTTP статус запроса.
      */
     @PostMapping("/{postId}/images")
     @SecurityRequirement(name = "JWT")
@@ -115,21 +92,15 @@ public class PostController {
             description = "Позволяет прикрепить изображение к посту, сохраняя массив байт в базе данных"
     )
     public ResponseEntity<?> addImageToPost(@PathVariable Long postId, @RequestBody Image image) {
-        try {
-            postService.addImage(postId, image);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (PostNotFoundException pnfEx) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), pnfEx.getMessage()));
-        } catch (AuthException aEx) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), aEx.getMessage()));
-        }
+        postService.addImage(postId, image);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     /**
      * API-endpoint для открепления изображения от поста.
      * @param postID идентификатор поста
      * @param imageId идентификатор изображения
-     * @return статус ответа или ошибку, если не удалось открепить изображение.
+     * @return HTTP статус запроса.
      */
     @DeleteMapping("/{postID}/images/{imageId}")
     @SecurityRequirement(name = "JWT")
@@ -138,14 +109,8 @@ public class PostController {
             description = "Позволяет открепить изображение от поста, удаляя его из базы данных"
     )
     public ResponseEntity<?> deleteImage(@PathVariable Long postID, @PathVariable Long imageId) {
-        try {
-            postService.deleteImage(postID, imageId);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (PostNotFoundException | ImageNotFoundException nfEx) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), nfEx.getMessage()));
-        } catch (AuthException aEx) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), aEx.getMessage()));
-        }
+        postService.deleteImage(postID, imageId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     /**
@@ -160,20 +125,15 @@ public class PostController {
             summary = "Получение списка постов пользователя",
             description = "Позволяет получить список постов текущего пользователя"
     )
-    public ResponseEntity<?> getAllPostsByUser(@RequestParam int page, @RequestParam int pageSize) {
-        try {
-            List<Post> posts = postService.showAllPostsByUser(PageRequest.of(page, pageSize));
-            return ResponseEntity.status(HttpStatus.OK).body(posts);
-        } catch (AuthException authEx) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), authEx.getMessage()));
-        }
+    public ResponseEntity<List<Post>> getAllPostsByUser(@RequestParam int page, @RequestParam int pageSize) {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.showAllPostsByUser(PageRequest.of(page, pageSize)));
     }
 
     /**
      * API-endpoint для получения списка всех постов отсортированных по дате создания.
      * @param page номер отображаемой страницы.
      * @param pageSize количество отображаемых постов на странице.
-     * @return список объектов Post или сообщение об ошибке.
+     * @return список объектов Post.
      */
     @GetMapping("/all")
     @SecurityRequirement(name = "JWT")
@@ -182,10 +142,6 @@ public class PostController {
             description = "Позволяет получить список всех постов отсортированных по дате создания"
     )
     public ResponseEntity<?> getAllPosts(@RequestParam int page, int pageSize) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(postService.getAllPostByCreateAt(PageRequest.of(page, pageSize)));
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage()));
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(postService.getAllPostByCreateAt(PageRequest.of(page, pageSize)));
     }
 }

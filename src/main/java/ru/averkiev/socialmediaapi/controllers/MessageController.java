@@ -7,14 +7,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.averkiev.socialmediaapi.exceptions.*;
 import ru.averkiev.socialmediaapi.models.MessageDTO;
 import ru.averkiev.socialmediaapi.models.MessageEditDTO;
 import ru.averkiev.socialmediaapi.models.User;
+import ru.averkiev.socialmediaapi.models.UserDTO;
 import ru.averkiev.socialmediaapi.services.impl.MessageServiceImpl;
 import ru.averkiev.socialmediaapi.services.impl.UserFriendServiceImpl;
 import ru.averkiev.socialmediaapi.services.impl.UserServiceImpl;
-import ru.averkiev.socialmediaapi.utils.ErrorResponse;
+
+import java.util.List;
 
 /**
  * Класс представляет собой REST-контроллер для управления сообщениями пользователей.
@@ -43,7 +44,7 @@ public class MessageController {
     /**
      * API-endpoint для создания сообщения.
      * @param messageDTO DTO содержащий данные сообщения.
-     * @return DTO созданного сообщения или ошибку.
+     * @return DTO созданного сообщения.
      */
     @PostMapping()
     @SecurityRequirement(name = "JWT")
@@ -51,26 +52,16 @@ public class MessageController {
             summary = "Создание нового сообщения",
             description = "Позволяет создать новое сообщение, если отправитель и получатель являются друзьями"
     )
-    public ResponseEntity<?> createMessage(@RequestBody MessageDTO messageDTO) {
-        try {
-            User sender = userService.getUserById(messageDTO.getSenderId());
-            User receiver = userService.getUserById(messageDTO.getReceiverId());
+    public ResponseEntity<MessageDTO> createMessage(@RequestBody MessageDTO messageDTO) {
 
-            // Проверка, что пользователи являются друзьями.
-            try {
-                userFriendService.findByUserAndFriend(sender, receiver);
-            } catch (UserFriendNotFoundException unfEx) {
-                throw new MessageCreateException("Пользователи: " + sender + " и " + receiver + " не являются друзьями.");
-            }
+        User sender = userService.getUserById(messageDTO.getSenderId());
+        User receiver = userService.getUserById(messageDTO.getReceiverId());
 
-            messageDTO = messageService.createMessage(messageDTO);
-            return ResponseEntity.status(HttpStatus.OK).body(messageDTO);
+        // Проверка, что пользователи являются друзьями.
+        userFriendService.findByUserAndFriend(sender, receiver);
 
-        } catch (MessageCreateException mcEx) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), mcEx.getMessage()));
-        } catch (UserNotFoundException unfEx) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), unfEx.getMessage()));
-        }
+        messageDTO = messageService.createMessage(messageDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(messageDTO);
     }
 
     /**
@@ -86,19 +77,13 @@ public class MessageController {
             description = "Позволяет отредактировать сообщение отправленное пользователю"
     )
     public ResponseEntity<?> editMessage(@PathVariable Long id, @RequestBody MessageEditDTO messageEditDTO) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(messageService.editMessage(id, messageEditDTO.getContent()));
-        } catch (MessageNotFoundException mnfEx) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), mnfEx.getMessage()));
-        } catch (AuthException authEx) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), authEx.getMessage()));
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(messageService.editMessage(id, messageEditDTO.getContent()));
     }
 
     /**
      * API-endpoint для удаления сообщения.
      * @param id идентификатор сообщения.
-     * @return ответ на запрос или ошибку.
+     * @return HTTP статус запроса.
      */
     @DeleteMapping("{id}")
     @SecurityRequirement(name = "JWT")
@@ -106,20 +91,14 @@ public class MessageController {
             summary = "Удаление сообщения",
             description = "Позволят удалить сообщение авторизованному пользователю"
     )
-    public ResponseEntity<?> deleteMessage(@PathVariable Long id) {
-        try {
-            messageService.deleteMessage(id);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (MessageNotFoundException mnfEx) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), mnfEx.getMessage()));
-        } catch (AuthException authEx) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), authEx.getMessage()));
-        }
+    public ResponseEntity<HttpStatus> deleteMessage(@PathVariable Long id) {
+        messageService.deleteMessage(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     /**
      * API-endpoint для получения списка собеседников авторизованного пользователя.
-     * @return список объектов UserDTO с данными пользователей или ошибку.
+     * @return список объектов UserDTO с данными пользователей.
      */
     @GetMapping("/conversations")
     @SecurityRequirement(name = "JWT")
@@ -127,18 +106,14 @@ public class MessageController {
             summary = "Получение списка собеседников",
             description = "Позволяет получить список собеседников пользователя в порядке убывания даты последних сообщений"
     )
-    public ResponseEntity<?> getConversations() {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(messageService.getConversationsForUser());
-        } catch (AuthException authEx) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), authEx.getMessage()));
-        }
+    public ResponseEntity<List<UserDTO>> getConversations() {
+        return ResponseEntity.status(HttpStatus.OK).body(messageService.getConversationsForUser());
     }
 
     /**
      * API-endpoint для получения переписки между пользователями.
      * @param id идентификатор собеседника.
-     * @return список объектов MessageDTO с данными сообщений или ошибку.
+     * @return список объектов MessageDTO с данными сообщений.
      */
     @GetMapping("/conversations/{id}")
     @SecurityRequirement(name = "JWT")
@@ -146,13 +121,7 @@ public class MessageController {
             summary = "Получение переписки",
             description = "Позволяет получить переписку текущего пользователя с указанным собеседником"
     )
-    public ResponseEntity<?> getMessages(@PathVariable Long id) {
-        try {
+    public ResponseEntity<List<MessageDTO>> getMessages(@PathVariable Long id) {
             return ResponseEntity.status(HttpStatus.OK).body(messageService.getMessagesBetweenUsers(id));
-        } catch (UserNotFoundException unfEx) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), unfEx.getMessage()));
-        } catch (AuthException authEx) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), authEx.getMessage()));
-        }
     }
 }

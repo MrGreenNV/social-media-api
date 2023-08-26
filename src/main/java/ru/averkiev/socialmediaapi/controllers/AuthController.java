@@ -9,11 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.averkiev.socialmediaapi.exceptions.AuthException;
 import ru.averkiev.socialmediaapi.security.JwtRequest;
 import ru.averkiev.socialmediaapi.security.JwtResponse;
 import ru.averkiev.socialmediaapi.services.impl.AuthServiceImpl;
-import ru.averkiev.socialmediaapi.utils.ErrorResponse;
 
 /**
  * Класс представляет собой REST-контроллер для аутентификации и авторизации пользователей в системе.
@@ -43,13 +41,7 @@ public class AuthController {
             summary = "Вход пользователя в систему",
             description = "Позволяет пройти аутентификацию зарегистрированным пользователям и получить JWT access и refresh токены с помощью имени пользователя и пароля"
     )
-    public ResponseEntity<?> login(@RequestBody JwtRequest jwtRequest) {
-        try {
-            final JwtResponse tokens = authService.login(jwtRequest);
-            return ResponseEntity.ok(tokens);
-        } catch (AuthException aEx) {
-            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), aEx.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-        }
+    public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest jwtRequest) {
+        return ResponseEntity.status(HttpStatus.OK).body(authService.login(jwtRequest));
     }
 }

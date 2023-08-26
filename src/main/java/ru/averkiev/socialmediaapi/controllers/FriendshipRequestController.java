@@ -7,14 +7,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.averkiev.socialmediaapi.exceptions.*;
 import ru.averkiev.socialmediaapi.models.FriendshipRequest;
 import ru.averkiev.socialmediaapi.models.FriendshipRequestDTO;
 import ru.averkiev.socialmediaapi.models.User;
 import ru.averkiev.socialmediaapi.services.impl.AuthServiceImpl;
 import ru.averkiev.socialmediaapi.services.impl.FriendshipRequestServiceImpl;
 import ru.averkiev.socialmediaapi.services.impl.UserServiceImpl;
-import ru.averkiev.socialmediaapi.utils.ErrorResponse;
 
 import java.util.List;
 
@@ -37,7 +35,7 @@ public class FriendshipRequestController {
     /** Сервис для взаимодействия с пользователями. */
     private final UserServiceImpl userService;
 
-    /** Сервис для взаимодействия с заявками на дружбу */
+    /** Сервис для взаимодействия с запросами на дружбу */
     private final FriendshipRequestServiceImpl friendshipRequestService;
 
     /** Сервис для взаимодействия с аутентификацией пользователей. */
@@ -45,7 +43,7 @@ public class FriendshipRequestController {
 
     /**
      * API-endpoint для получения всех ожидающих запросов на дружбу.
-     * @return статус запроса или сообщение об ошибке.
+     * @return список запросов на дружбу.
      */
     @SecurityRequirement(name = "JWT")
     @Operation(
@@ -53,22 +51,16 @@ public class FriendshipRequestController {
             description = "Выводит список ожидающих запросов на дружбу для аутентифицированного пользователя."
     )
     @GetMapping("/pending")
-    public ResponseEntity<?> getPendingFriendshipRequest() {
-        try {
-            User user = userService.getUserById(authService.getUserIdFromAuthentication());
-            List<FriendshipRequest> pendingRequest = friendshipRequestService.getReceivedPendingFriendshipRequests(user);
-            return ResponseEntity.ok(pendingRequest);
-        } catch (AuthException authEx) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), authEx.getMessage()));
-        } catch (UserNotFoundException unfEx) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), unfEx.getMessage()));
-        }
+    public ResponseEntity<List<FriendshipRequest>> getPendingFriendshipRequest() {
+        User user = userService.getUserById(authService.getUserIdFromAuthentication());
+        List<FriendshipRequest> pendingRequest = friendshipRequestService.getReceivedPendingFriendshipRequests(user);
+        return ResponseEntity.ok(pendingRequest);
     }
 
     /**
-     * API-endpoint для создания запроса дружбы.
+     * API-endpoint для создания запроса на дружбу.
      * @param requestDTO DTO запрос содержащий информацию об идентификаторах пользователей.
-     * @return статус запроса или сообщение об ошибке.
+     * @return HTTP статус запроса.
      */
     @PostMapping("/send")
     @SecurityRequirement(name = "JWT")
@@ -76,24 +68,19 @@ public class FriendshipRequestController {
             summary = "Отправка запроса на дружбу",
             description = "Создает запрос на дружбу и подписку"
     )
-    public ResponseEntity<?> sendFriendRequest(@RequestBody FriendshipRequestDTO requestDTO) {
-        try {
-            User fromUser = userService.getUserById(requestDTO.getFromUserId());
-            User toUser = userService.getUserById(requestDTO.getToUserId());
+    public ResponseEntity<HttpStatus> sendFriendRequest(@RequestBody FriendshipRequestDTO requestDTO) {
+        User fromUser = userService.getUserById(requestDTO.getFromUserId());
+        User toUser = userService.getUserById(requestDTO.getToUserId());
 
-            friendshipRequestService.sendFriendRequest(fromUser, toUser);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (FriendshipRequestCreateException frcEx) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), frcEx.getMessage()));
-        } catch (UserNotFoundException unfEx) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), unfEx.getMessage()));
-        }
+        friendshipRequestService.sendFriendRequest(fromUser, toUser);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     /**
-     * API-endpoint для принятия заявки на дружбу.
+     * API-endpoint для принятия запроса на дружбу.
      * @param requestDTO DTO запрос содержащий информацию об идентификаторах пользователей.
-     * @return статус запроса или сообщение об ошибке.
+     * @return HTTP статус запроса.
      */
     @PostMapping("/accept")
     @SecurityRequirement(name = "JWT")
@@ -101,8 +88,7 @@ public class FriendshipRequestController {
             summary = "Принятие запроса на дружбу",
             description = "Принимает запрос на дружбу и подписывается в ответ"
     )
-    public ResponseEntity<?> acceptFriendRequest(@RequestBody FriendshipRequestDTO requestDTO) {
-        try {
+    public ResponseEntity<HttpStatus> acceptFriendRequest(@RequestBody FriendshipRequestDTO requestDTO) {
             User fromUser = userService.getUserById(requestDTO.getFromUserId());
             User toUser = userService.getUserById(requestDTO.getToUserId());
 
@@ -110,17 +96,12 @@ public class FriendshipRequestController {
             friendshipRequestService.acceptFriendshipRequest(request);
 
             return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (FriendshipRequestNotFoundException | UserNotFoundException nfEx) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), nfEx.getMessage()));
-        } catch (FriendshipRequestAcceptException faEx) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), faEx.getMessage()));
-        }
     }
 
     /**
-     * API-endpoint для отклонения заявки на дружбу.
-     * @param requestDTO DTO запрос содержащий информацию об идентификаторах пользователей.
-     * @return статус запроса или сообщение об ошибке.
+     * API-endpoint для отклонения запроса на дружбу.
+     * @param requestDTO DTO запроса на дружбу, содержащий информацию об идентификаторах пользователей.
+     * @return HTTP статус запроса.
      */
     @PostMapping("/decline")
     @SecurityRequirement(name = "JWT")
@@ -128,25 +109,21 @@ public class FriendshipRequestController {
             summary = "Отклонение запроса на дружбу",
             description = "Отклоняет запрос на дружбу и удаляет его из базы данных"
     )
-    public ResponseEntity<?> declineFriendRequest(@RequestBody FriendshipRequestDTO requestDTO) {
-        try {
-            User fromUser = userService.getUserById(requestDTO.getFromUserId());
-            User toUser = userService.getUserById(requestDTO.getToUserId());
+    public ResponseEntity<HttpStatus> declineFriendRequest(@RequestBody FriendshipRequestDTO requestDTO) {
+        User fromUser = userService.getUserById(requestDTO.getFromUserId());
+        User toUser = userService.getUserById(requestDTO.getToUserId());
 
-            FriendshipRequest request = friendshipRequestService.findFriendshipRequest(fromUser, toUser);
-            friendshipRequestService.acceptFriendshipRequest(request);
+        FriendshipRequest request = friendshipRequestService.findFriendshipRequest(fromUser, toUser);
+        friendshipRequestService.acceptFriendshipRequest(request);
 
-            friendshipRequestService.declineFriendshipRequest(request);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (FriendshipRequestNotFoundException | UserNotFoundException nfEx) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), nfEx.getMessage()));
-        }
+        friendshipRequestService.declineFriendshipRequest(request);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     /**
      * API-endpoint для удаления дружеской связи.
-     * @param requestDTO DTO запрос содержащий информацию об идентификаторах пользователей.
-     * @return статус запроса или сообщение об ошибке.
+     * @param requestDTO DTO запроса на дружбу, содержащий информацию об идентификаторах пользователей.
+     * @return HTTP статус запроса.
      */
     @PostMapping("/delete")
     @SecurityRequirement(name = "JWT")
@@ -154,16 +131,12 @@ public class FriendshipRequestController {
             summary = "Удаление дружеской связи между пользователями",
             description = "Удаляет дружескую связь, запрос на дружбу и отписывается от удаляемого пользователя"
     )
-    public ResponseEntity<?> deleteFriendship(@RequestBody FriendshipRequestDTO requestDTO) {
-        try {
+    public ResponseEntity<HttpStatus> deleteFriendship(@RequestBody FriendshipRequestDTO requestDTO) {
             User fromUser = userService.getUserById(requestDTO.getFromUserId());
             User toUser = userService.getUserById(requestDTO.getToUserId());
 
             friendshipRequestService.cancelFriendshipRequest(fromUser, toUser);
             return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (FriendshipRequestNotFoundException | UserFriendNotFoundException | SubscriberNotFoundException | SubscriptionNotFoundException nfEx) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), nfEx.getMessage()));
-        }
     }
 
 }

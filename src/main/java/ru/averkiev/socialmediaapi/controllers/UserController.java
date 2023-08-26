@@ -8,18 +8,12 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import ru.averkiev.socialmediaapi.exceptions.UserRegistrationException;
 import ru.averkiev.socialmediaapi.models.UserCreateDTO;
 import ru.averkiev.socialmediaapi.models.UserFriendDTO;
 import ru.averkiev.socialmediaapi.services.impl.UserServiceImpl;
-import ru.averkiev.socialmediaapi.utils.ErrorResponse;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Класс представляет собой REST-контроллер для взаимодействия с пользователями в системе.
@@ -45,55 +39,31 @@ public class UserController {
     /**
      * API-endpoint для регистрации нового пользователя.
      * @param userCreateDTO данные для регистрации нового пользователя.
-     * @return данные зарегистрированного пользователя или сообщение об ошибке.
+     * @return данные зарегистрированного пользователя.
      */
     @PostMapping("register")
     @Operation(
             summary = "Регистрация пользователя в системе",
             description = "Позволяет зарегистрировать пользователя в системе по указанным имени, паролю и электронной почте."
     )
-    public ResponseEntity<?> register(@Valid @RequestBody UserCreateDTO userCreateDTO) {
-        try {
-            return ResponseEntity.ok(userService.register(userCreateDTO));
-        } catch (UserRegistrationException regEx) {
-            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), regEx.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-        }
+    public ResponseEntity<UserCreateDTO> register(@Valid @RequestBody UserCreateDTO userCreateDTO) {
+        return ResponseEntity.ok(userService.register(userCreateDTO));
     }
 
     /**
      * API-endpoint для получения информации о всех пользователях, зарегистрированных в системе.
      * @return список пользователей зарегистрированных в системе.
      */
+    @GetMapping
     @Operation(
             summary = "Выводит список пользователей",
             description = "Позволяет просмотреть имена и электронные почты всех пользователей, зарегистрированных в системе"
     )
     @SecurityRequirement(name = "JWT")
-    @GetMapping
-    public ResponseEntity<?> showAllUser() {
+    public ResponseEntity<List<UserFriendDTO>> showAllUser() {
         List<UserFriendDTO> userFriendDTOList = userService.getAllUsers().stream()
                 .map(user -> modelMapper.map(user, UserFriendDTO.class))
                 .toList();
-        return ResponseEntity.ok(userFriendDTOList);
-    }
-
-    /**
-     * Позволяет обработать ошибки связанные с валидацией пользовательских данных.
-     * @param ex ошибки при валидации данных.
-     * @return объект ErrorResponse, содержащий информацию об ошибках.
-     */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ResponseBody
-    public ErrorResponse handleValidationException(MethodArgumentNotValidException ex) {
-        BindingResult bindingResult = ex.getBindingResult();
-        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-
-        List<String> errorMessages = fieldErrors.stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .collect(Collectors.toList());
-
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Validation failed", errorMessages);
+        return ResponseEntity.status(HttpStatus.OK).body(userFriendDTOList);
     }
 }

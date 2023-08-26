@@ -1,7 +1,7 @@
 package ru.averkiev.socialmediaapi.exceptions;
 
 /**
- * Исключение, выбрасываемое в случае если не удалось найти подписку в базе данных.
+ * Исключение, выбрасываемое в случае если не удалось найти подписчика в базе данных.
  * @author mrGreenNV
  */
 public class SubscriberNotFoundException extends RuntimeException {

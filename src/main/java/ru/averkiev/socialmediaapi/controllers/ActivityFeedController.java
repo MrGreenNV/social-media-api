@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.averkiev.socialmediaapi.exceptions.ActivityFeedException;
-import ru.averkiev.socialmediaapi.exceptions.AuthException;
+import ru.averkiev.socialmediaapi.models.PostDTO;
 import ru.averkiev.socialmediaapi.services.impl.ActivityFeedServiceImpl;
-import ru.averkiev.socialmediaapi.utils.ErrorResponse;
+
+import java.util.List;
 
 /**
  * Класс представляет собой REST-контроллер отображения ленты активности для пользователей.
@@ -37,7 +37,7 @@ public class ActivityFeedController {
      * API-endpoint для отображения ленты активности для пользователя.
      * @param page номер отображаемой страницы.
      * @param pageSize количество отображаемых постов на странице.
-     * @return список объектов Post или сообщение об ошибке.
+     * @return список объектов DTO для постов.
      */
     @GetMapping()
     @SecurityRequirement(name = "JWT")
@@ -45,14 +45,8 @@ public class ActivityFeedController {
             summary = "Отображает ленту активности для пользователя",
             description = "Позволяет вывести список постов в соответствии с подписками пользователя"
     )
-    public ResponseEntity<?> getActivityFeedForUser(@RequestParam(value = "page", required = false) int page,
-                                                    @RequestParam(value = "pageSize", required = false) int pageSize) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(activityFeedService.getActivityFeedForUser(page, pageSize));
-        } catch (AuthException authEx) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), authEx.getMessage()));
-        } catch (ActivityFeedException afEx) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), afEx.getMessage()));
-        }
+    public ResponseEntity<List<PostDTO>> getActivityFeedForUser(@RequestParam(value = "page", required = false) int page,
+                                                                @RequestParam(value = "pageSize", required = false) int pageSize) {
+        return ResponseEntity.status(HttpStatus.OK).body(activityFeedService.getActivityFeedForUser(page, pageSize));
     }
 }
