@@ -1,6 +1,7 @@
 package ru.averkiev.socialmediaapi.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,10 +16,12 @@ import java.util.List;
 @Table(name = "users")
 @Getter
 @Setter
+@Schema(description = "Сущность пользователя")
 public class User extends BaseEntity {
 
     /** Имя пользователя в системе. */
     @Column(name = "username")
+    @Schema(description = "Имя пользователя в системе")
     private String username;
 
     /** Хэшированный пароль пользователя. */
@@ -28,6 +31,7 @@ public class User extends BaseEntity {
 
     /** Электронная почта пользователя. */
     @Column(name = "email")
+    @Schema(description = "Электронная почта пользователя")
     private String email;
 
     /** Список отправленных запросов дружбы. */
