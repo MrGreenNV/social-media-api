@@ -319,7 +319,7 @@
 
     <!--    Создание таблицы запросов на дружбу. -->
     <changeSet id="1.0.18" author="MrGreenNV">
-        <createTable tableName="friendship_request">
+        <createTable tableName="friendship_requests">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -346,7 +346,7 @@
 
     <!--    Создание внешнего ключа для пользователя отправляющего запрос на дружбу. -->
     <changeSet id="1.0.19" author="MrGreenNV">
-        <addForeignKeyConstraint baseTableName="friendship_request"
+        <addForeignKeyConstraint baseTableName="friendship_requests"
                                  baseColumnNames="from_user_id"
                                  constraintName="fk_friendship_from_user"
                                  onDelete="CASCADE"
@@ -358,7 +358,7 @@
 
     <!--    Создание внешнего ключа для пользователя, которому предназначается запрос на дружбу. -->
     <changeSet id="1.0.20" author="MrGreenNV">
-        <addForeignKeyConstraint baseTableName="friendship_request"
+        <addForeignKeyConstraint baseTableName="friendship_requests"
                                  baseColumnNames="to_user_id"
                                  constraintName="fk_friendship_to_user"
                                  onDelete="CASCADE"

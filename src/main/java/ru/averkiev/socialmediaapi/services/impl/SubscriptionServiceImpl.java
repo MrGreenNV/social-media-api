@@ -62,7 +62,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
      */
     @Override
     public List<Subscription> findAllByUser(User user) {
-        List<Subscription> subscriptions = subscriptionRepository.findAll();
+        List<Subscription> subscriptions = subscriptionRepository.findAllByUser(user);
         log.info("IN findAllByUser - список подписок пользователя: {} успешно получен", user.getUsername());
         return subscriptions;
     }

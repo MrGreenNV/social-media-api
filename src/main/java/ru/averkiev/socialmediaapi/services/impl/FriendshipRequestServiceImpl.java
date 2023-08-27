@@ -60,10 +60,10 @@ public class FriendshipRequestServiceImpl implements FriendshipRequestService {
         log.info("IN sendFriendRequest - запрос на дружбу успешно создан");
 
         // Сохранение подписки.
-        subscriberService.save(fromUser, toUser);
+        subscriptionService.save(fromUser, toUser);
 
         // Сохранение подписчика.
-        subscriptionService.save(toUser, fromUser);
+        subscriberService.save(toUser, fromUser);
     }
 
     /**
@@ -91,10 +91,10 @@ public class FriendshipRequestServiceImpl implements FriendshipRequestService {
         log.info("IN acceptFriendshipRequest - запрос на дружбу успешно принят");
 
         // Сохранение подписки.
-        subscriptionService.save(fromUser, toUser);
+        subscriptionService.save(toUser, fromUser);
 
         // Сохранение подписчика.
-        subscriberService.save(toUser, fromUser);
+        subscriberService.save(fromUser, toUser);
     }
 
     /**
@@ -132,10 +132,10 @@ public class FriendshipRequestServiceImpl implements FriendshipRequestService {
         userFriendService.deleteByUserAndFriend(friend, user);
 
         // Удаление подписки.
-        subscriberService.deleteByUserAndSubscribedUser(user, friend);
+        subscriptionService.deleteByUserAndSubscribedUser(friend, user);
 
         // Удаление пользователя из подписчиков.
-        subscriptionService.deleteByUserAndSubscribedUser(friend, user);
+        subscriberService.deleteByUserAndSubscribedUser(user, friend);
 
     }
 

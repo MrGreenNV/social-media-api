@@ -79,8 +79,21 @@ public class ActivityFeedServiceImpl implements ActivityFeedService {
 
         // Получение пользователя из аутентификации.
         User user = userService.getUserById(authService.getUserIdFromAuthentication());
+
+
+        System.out.println(user.getUsername());
+
+
         // Получение списка подписок пользователя.
         List<Subscription> subscriptions = subscriptionService.findAllByUser(user);
+
+
+        for (Subscription subscription: subscriptions) {
+            System.out.println(subscription.getUser().getUsername());
+            System.out.println(subscription.getSubscriptionUser().getUsername());
+        }
+
+
 
         // Если нет подписок - выброс исключения.
         if (subscriptions.isEmpty()) {
