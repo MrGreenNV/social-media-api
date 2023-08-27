@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import ru.averkiev.socialmediaapi.exceptions.AuthException;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
@@ -99,12 +100,8 @@ public class JwtProvider {
      * @param token переданный токен, который необходимо проверить.
      * @param secret секретный ключ для разбора токена и проверки его целостности.
      * @return возвращает результат проверки токена.
-     * @exception ExpiredJwtException выбрасывается если токен недействителен.
-     * @exception UnsupportedJwtException выбрасывается если токен не поддерживается.
-     * @exception MalformedJwtException выбрасывается если токен некорректен.
-     * @exception SignatureException выбрасывается если секретный ключ недействителен.
      */
-    public boolean validateToken(@NotNull String token, @NotNull Key secret) {
+    public boolean validateToken(@NotNull String token, @NotNull Key secret) throws AuthException {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(secret)
@@ -112,17 +109,18 @@ public class JwtProvider {
                     .parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException expEx) {
-            log.error("Истек срок действия токена", expEx);
+            log.error("Истек срок действия токена");
+            throw new AuthException("The token expired");
         } catch (UnsupportedJwtException unsEx) {
             log.error("Неподдерживаемый JWT", unsEx);
+            throw new AuthException("Unsupported JWT");
         } catch (MalformedJwtException malEx) {
             log.error("Некорректный JWT", malEx);
+            throw new AuthException("Invalid JWT");
         } catch (SignatureException sEx) {
             log.error("Недействительная подпись", sEx);
-        } catch (Exception ex) {
-            log.error("Неправильный токен", ex);
+            throw new AuthException("Invalid signature");
         }
-        return false;
     }
 
     /**
