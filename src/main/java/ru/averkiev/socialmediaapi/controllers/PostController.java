@@ -1,6 +1,7 @@
 package ru.averkiev.socialmediaapi.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -125,8 +126,10 @@ public class PostController {
             summary = "Получение списка постов пользователя",
             description = "Позволяет получить список постов текущего пользователя с возможностью пагинации"
     )
-    public ResponseEntity<List<Post>> getAllPostsByUser(@RequestParam(required = false) Integer page,
-                                                        @RequestParam(required = false) Integer pageSize) {
+    public ResponseEntity<List<Post>> getAllPostsByUser(
+            @Parameter(name = "page", description = "Номер отображаемой страницы") @RequestParam(value = "page", required = false) Integer page,
+            @Parameter(name = "pageSize", description = "Количество отображаемых элементов на странице") @RequestParam(value = "pageSize", required = false) Integer pageSize
+    ) {
         if (page == null || pageSize == null) {
             return ResponseEntity.status(HttpStatus.OK).body(postService.showAllPostsByUser());
         }
@@ -145,8 +148,10 @@ public class PostController {
             summary = "Получения списка всех постов",
             description = "Позволяет получить список всех постов отсортированных по дате создания с возможностью пагинации"
     )
-    public ResponseEntity<?> getAllPosts(@RequestParam(required = false) Integer page,
-                                         @RequestParam(required = false) Integer pageSize) {
+    public ResponseEntity<?> getAllPosts(
+            @Parameter(name = "page", description = "Номер отображаемой страницы") @RequestParam(value = "page", required = false) Integer page,
+            @Parameter(name = "pageSize", description = "Количество отображаемых элементов на странице") @RequestParam(value = "pageSize", required = false) Integer pageSize
+    ) {
         if (page == null || pageSize == null) {
             return ResponseEntity.status(HttpStatus.OK).body(postService.getAllPostByCreateAt());
         }

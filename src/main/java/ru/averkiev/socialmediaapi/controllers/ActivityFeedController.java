@@ -1,6 +1,7 @@
 package ru.averkiev.socialmediaapi.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -45,8 +46,10 @@ public class ActivityFeedController {
             summary = "Отображает ленту активности для пользователя",
             description = "Позволяет вывести список постов в соответствии с подписками пользователя"
     )
-    public ResponseEntity<List<PostDTO>> getActivityFeedForUser(@RequestParam(value = "page", required = false) Integer page,
-                                                                @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+    public ResponseEntity<List<PostDTO>> getActivityFeedForUser(
+            @Parameter(name = "page", description = "Номер отображаемой страницы") @RequestParam(value = "page", required = false) Integer page,
+            @Parameter(name = "pageSize", description = "Количество отображаемых элементов на странице") @RequestParam(value = "pageSize", required = false) Integer pageSize
+    ) {
         if (page == null || pageSize == null) {
             return ResponseEntity.status(HttpStatus.OK).body(activityFeedService.getActivityFeedForUser());
         }
