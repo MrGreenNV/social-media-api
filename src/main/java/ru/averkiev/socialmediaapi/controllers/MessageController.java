@@ -76,7 +76,7 @@ public class MessageController {
             summary = "Редактирование сообщения",
             description = "Позволяет отредактировать сообщение отправленное пользователю"
     )
-    public ResponseEntity<?> editMessage(@PathVariable Long id, @RequestBody MessageEditDTO messageEditDTO) {
+    public ResponseEntity<MessageDTO> editMessage(@PathVariable Long id, @RequestBody MessageEditDTO messageEditDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(messageService.editMessage(id, messageEditDTO.getContent()));
     }
 
