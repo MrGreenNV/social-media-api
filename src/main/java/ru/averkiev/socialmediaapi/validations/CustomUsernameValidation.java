@@ -39,7 +39,7 @@ public class CustomUsernameValidation implements ConstraintValidator<CustomUsern
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
         if (value == null) {
-            return true;
+            return false;
         }
 
         int length = value.length();
