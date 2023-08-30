@@ -19,6 +19,7 @@ target/
 *.iml
 *.ipr
 application.properties
+test.properties
 package-info.java
 
 ### NetBeans ###
