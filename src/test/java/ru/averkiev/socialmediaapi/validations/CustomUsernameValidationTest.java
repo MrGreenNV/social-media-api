@@ -26,7 +26,7 @@ class CustomUsernameValidationTest {
      * Выполняется перед тестами.
      */
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         validator = new CustomUsernameValidation();
         CustomUsername annotation = mock(CustomUsername.class);
         validator.initialize(annotation);
@@ -37,7 +37,7 @@ class CustomUsernameValidationTest {
      * Проверяет валидацию корректных имен пользователя.
      */
     @Test
-    void testValidUsername() {
+    public void testValidUsername() {
         assertTrue(validator.isValid("john_doe123", context));
         assertTrue(validator.isValid("user123", context));
         assertTrue(validator.isValid("username", context));
@@ -47,7 +47,7 @@ class CustomUsernameValidationTest {
      * Проверяет валидацию некорректных имен пользователя.
      */
     @Test
-    void testInvalidUsername() {
+    public void testInvalidUsername() {
         assertFalse(validator.isValid("", context));
         assertFalse(validator.isValid("user@", context));
         assertFalse(validator.isValid("user name", context));
@@ -61,7 +61,7 @@ class CustomUsernameValidationTest {
      * Проверяет валидацию с переданным значением null.
      */
     @Test
-    void testNullUsernameIsValid() {
+    public void testNullUsernameIsInvalid() {
         assertFalse(validator.isValid(null, context));
     }
 

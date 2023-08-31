@@ -33,7 +33,7 @@ public class CustomEmailValidation implements ConstraintValidator<CustomEmail, S
     public boolean isValid(String value, ConstraintValidatorContext context) {
 
         if (value == null) {
-            return true;
+            return false;
         }
 
         return EMAIL_PATTERN.matcher(value).matches();
