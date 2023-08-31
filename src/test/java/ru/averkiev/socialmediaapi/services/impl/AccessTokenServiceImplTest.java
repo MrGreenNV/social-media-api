@@ -33,7 +33,7 @@ class AccessTokenServiceImplTest {
      * Инициализирует объекты и ресурсы, необходимые для выполнения тестов.
      */
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -41,7 +41,7 @@ class AccessTokenServiceImplTest {
      * Проверяет, что метод save() класса AccessTokenServiceImpl корректно сохраняет переданный токен в репозитории.
      */
     @Test
-    void testSaveAccessToken() {
+    public void testSaveAccessToken() {
         AccessToken accessToken = new AccessToken();
         when(accessTokenRepository.save(any(AccessToken.class))).thenReturn(accessToken);
 
@@ -55,7 +55,7 @@ class AccessTokenServiceImplTest {
      * Проверяет, что метод findByUserId() класса AccessTokenServiceImpl корректно находит токен по идентификатору пользователя.
      */
     @Test
-    void testFindByUserId() {
+    public void testFindByUserId() {
         long userId = 1L;
         AccessToken accessToken = new AccessToken();
         when(accessTokenRepository.findByUserId(userId)).thenReturn(Optional.of(accessToken));
@@ -70,7 +70,7 @@ class AccessTokenServiceImplTest {
      * Проверяет, что метод findByUserId() правильно обрабатывает случай, когда токен не найден.
      */
     @Test
-    void testFindByUserIdNotFound() {
+    public void testFindByUserIdNotFound() {
         long userId = 1L;
         when(accessTokenRepository.findByUserId(userId)).thenReturn(Optional.empty());
 
@@ -81,7 +81,7 @@ class AccessTokenServiceImplTest {
      * Проверяет, что метод updateByUserId() класса AccessTokenServiceImpl корректно обновляет токен по идентификатору пользователя.
      */
     @Test
-    void testUpdateByUserId() {
+    public void testUpdateByUserId() {
         long userId = 1L;
         AccessToken currentAccessToken = new AccessToken();
         AccessToken updateAccessToken = new AccessToken();
@@ -99,7 +99,7 @@ class AccessTokenServiceImplTest {
      * Проверяет, что метод updateByUserId() правильно обрабатывает случай, когда токен не найден.
      */
     @Test
-    void testUpdateByUserIdNotFound() {
+    public void testUpdateByUserIdNotFound() {
         long userId = 1L;
         AccessToken updateAccessToken = new AccessToken();
         when(accessTokenRepository.findByUserId(userId)).thenReturn(Optional.empty());
@@ -114,7 +114,7 @@ class AccessTokenServiceImplTest {
      * Проверяет, что метод delete() класса AccessTokenServiceImpl корректно удаляет токен по идентификатору пользователя.
      */
     @Test
-    void testDeleteAccessToken() {
+    public void testDeleteAccessToken() {
         long userId = 1L;
         AccessToken accessToken = new AccessToken();
         when(accessTokenRepository.findByUserId(userId)).thenReturn(Optional.of(accessToken));
@@ -128,7 +128,7 @@ class AccessTokenServiceImplTest {
      * Проверяет, что метод delete() правильно обрабатывает случай, когда токен не найден.
      */
     @Test
-    void testDeleteAccessTokenNotFound() {
+    public void testDeleteAccessTokenNotFound() {
         long userId = 1L;
         when(accessTokenRepository.findByUserId(userId)).thenReturn(Optional.empty());
 
